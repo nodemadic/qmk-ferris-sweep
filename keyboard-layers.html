@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workstation Reference — Ferris Sweep + Sway + Neovim</title>
+<style>
+  :root {
+    --bg: #1a1b26;
+    --surface: #24283b;
+    --surface2: #2f3347;
+    --border: #3b4261;
+    --text: #c0caf5;
+    --text-dim: #565f89;
+    --accent: #7aa2f7;
+    --green: #9ece6a;
+    --orange: #e0af68;
+    --red: #f7768e;
+    --purple: #bb9af7;
+    --cyan: #7dcfff;
+    --teal: #73daca;
+    --yellow: #e0af68;
+    --pink: #ff007c;
+    --key-bg: #2a2e42;
+    --key-border: #3d4260;
+    --held-bg: #3d2936;
+    --held-border: #f7768e;
+    --trans-bg: #1e2030;
+    --trans-border: #2a2e42;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  /* Top-level section navigation */
+  .section-nav {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .section-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .section-btn:hover { background: var(--surface2); color: var(--text); }
+  .section-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  .section-content { display: none; }
+  .section-content.active { display: block; }
+
+  /* Tab navigation (keyboard layers) */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .tab:hover { background: var(--surface2); color: var(--text); }
+  .tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  .tab .hint {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Layer panels */
+  .layer-panel { display: none; }
+  .layer-panel.active { display: block; }
+
+  .layer-header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .layer-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .layer-header p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* Keyboard layout */
+  .keyboard {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 0 auto 24px;
+    max-width: 760px;
+  }
+
+  .hand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .row {
+    display: flex;
+    gap: 4px;
+  }
+
+  .thumb-row {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
+
+  .hand.right .thumb-row {
+    justify-content: flex-start;
+  }
+
+  .key {
+    width: 68px;
+    height: 54px;
+    border: 1px solid var(--key-border);
+    border-radius: 6px;
+    background: var(--key-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.15s;
+    cursor: default;
+  }
+
+  .key:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(122, 162, 247, 0.15);
+  }
+
+  .key .label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .key .sub {
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Key types */
+  .key.held {
+    background: var(--held-bg);
+    border-color: var(--held-border);
+    box-shadow: 0 0 10px rgba(247, 118, 142, 0.2);
+  }
+  .key.held .label { color: var(--red); }
+
+  .key.transparent {
+    background: var(--trans-bg);
+    border-color: var(--trans-border);
+    border-style: dashed;
+  }
+  .key.transparent .label { color: var(--text-dim); font-size: 0.65rem; }
+
+  .key.modifier .label { color: var(--purple); }
+  .key.nav .label { color: var(--cyan); }
+  .key.number .label { color: var(--green); }
+  .key.symbol .label { color: var(--orange); }
+  .key.sway .label { color: var(--teal); }
+  .key.func .label { color: var(--yellow); }
+  .key.media .label { color: var(--pink); }
+  .key.danger .label { color: var(--red); }
+
+  .key.layer-tap .sub { color: var(--accent); }
+
+  /* Info box */
+  .info-box {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  .info-box strong { color: var(--text); }
+  .info-box code {
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    color: var(--accent);
+  }
+
+  /* Cheat sheet */
+  .cheat-sheet {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .cheat-sheet h3 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+
+  .cheat-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .cheat-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .cheat-group h4 {
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cheat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: 0.68rem;
+    gap: 8px;
+  }
+
+  .cheat-row .action { color: var(--text-dim); }
+  .cheat-row .keys { color: var(--text); text-align: right; white-space: nowrap; }
+  .cheat-row .keys span {
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 0.65rem;
+  }
+
+  /* Thumb activation legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 0.68rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-dim);
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+
+  .swatch-held { background: var(--held-bg); border-color: var(--held-border); }
+  .swatch-trans { background: var(--trans-bg); border-color: var(--trans-border); border-style: dashed; }
+  .swatch-mod { background: var(--key-bg); border-color: var(--purple); }
+  .swatch-nav { background: var(--key-bg); border-color: var(--cyan); }
+  .swatch-num { background: var(--key-bg); border-color: var(--green); }
+  .swatch-sym { background: var(--key-bg); border-color: var(--orange); }
+  .swatch-sway { background: var(--key-bg); border-color: var(--teal); }
+  .swatch-func { background: var(--key-bg); border-color: var(--yellow); }
+
+  /* Keyboard shortcuts hint */
+  .kbd-hint {
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .kbd-hint kbd {
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Guide sections ===== */
+  .guide-section {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .guide-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .guide-section h3 {
+    font-size: 0.95rem;
+    color: var(--teal);
+    margin: 20px 0 10px;
+  }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 0.75rem;
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .ref-table td {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .ref-table tr:hover td {
+    background: var(--surface2);
+  }
+
+  .ref-table td:first-child {
+    color: var(--text-dim);
+  }
+
+  .ref-table td:last-child {
+    font-weight: 500;
+  }
+
+  .ref-table code {
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    color: var(--accent);
+  }
+
+  .ref-table .cat-header td {
+    background: var(--bg);
+    color: var(--teal);
+    font-weight: 600;
+    font-size: 0.72rem;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .guide-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin: 12px 0;
+  }
+
+  .guide-note strong { color: var(--text); }
+
+  .guide-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .guide-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .guide-card h4 {
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .guide-card .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: 0.68rem;
+    gap: 8px;
+  }
+
+  .guide-card .item .desc { color: var(--text-dim); }
+  .guide-card .item .val {
+    color: var(--text);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .guide-card .item .val code {
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 0.65rem;
+    color: var(--accent);
+  }
+
+  /* Section divider */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px auto;
+    max-width: 400px;
+  }
+
+  @media (max-width: 800px) {
+    .keyboard { gap: 16px; flex-wrap: wrap; }
+    .key { width: 58px; height: 46px; }
+    .key .label { font-size: 0.68rem; }
+    .cheat-columns { grid-template-columns: 1fr; }
+    .guide-columns { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Workstation Reference</h1>
+<p class="subtitle">Ferris Sweep 34-key &mdash; Sway WM &mdash; Neovim (LazyVim) &mdash; Mouseless Tools</p>
+
+<!-- Top-level section navigation -->
+<div class="section-nav">
+  <button class="section-btn active" data-section="keyboard">Keyboard Layers</button>
+  <button class="section-btn" data-section="sway">Sway WM</button>
+  <button class="section-btn" data-section="neovim">Neovim</button>
+  <button class="section-btn" data-section="tools">Shell + Tools</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION: KEYBOARD LAYERS                                      -->
+<!-- ============================================================ -->
+<div class="section-content active" data-section="keyboard">
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch swatch-held"></div> Held key</div>
+  <div class="legend-item"><div class="legend-swatch swatch-trans"></div> Transparent</div>
+  <div class="legend-item"><div class="legend-swatch swatch-mod"></div> Modifier</div>
+  <div class="legend-item"><div class="legend-swatch swatch-nav"></div> Navigation</div>
+  <div class="legend-item"><div class="legend-swatch swatch-num"></div> Number</div>
+  <div class="legend-item"><div class="legend-swatch swatch-sym"></div> Symbol</div>
+  <div class="legend-item"><div class="legend-swatch swatch-sway"></div> Sway WM</div>
+  <div class="legend-item"><div class="legend-swatch swatch-func"></div> Function</div>
+</div>
+
+<div class="kbd-hint">Navigate layers: <kbd>1</kbd>-<kbd>7</kbd> or <kbd>&larr;</kbd><kbd>&rarr;</kbd> arrow keys</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" data-layer="0">BASE<span class="hint">default</span></button>
+  <button class="tab" data-layer="1">NAV<span class="hint">hold Space</span></button>
+  <button class="tab" data-layer="2">NUM<span class="hint">hold Esc</span></button>
+  <button class="tab" data-layer="3">MOD<span class="hint">hold Bksp</span></button>
+  <button class="tab" data-layer="4">SWAY<span class="hint">hold Enter</span></button>
+  <button class="tab" data-layer="5">SYM<span class="hint">hold Tab</span></button>
+  <button class="tab" data-layer="6">FUNC<span class="hint">Spc + Bksp</span></button>
+</div>
+
+<!-- BASE -->
+<div class="layer-panel active" data-layer="0">
+  <div class="layer-header">
+    <h2>Layer 0: BASE</h2>
+    <p>Standard QWERTY. Thumb keys are tap/hold: tap sends the key, hold activates the layer.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key"><span class="label">Q</span></div>
+        <div class="key"><span class="label">W</span></div>
+        <div class="key"><span class="label">E</span></div>
+        <div class="key"><span class="label">R</span></div>
+        <div class="key"><span class="label">T</span></div>
+      </div>
+      <div class="row">
+        <div class="key"><span class="label">A</span></div>
+        <div class="key"><span class="label">S</span></div>
+        <div class="key"><span class="label">D</span></div>
+        <div class="key"><span class="label">F</span></div>
+        <div class="key"><span class="label">G</span></div>
+      </div>
+      <div class="row">
+        <div class="key"><span class="label">Z</span></div>
+        <div class="key"><span class="label">X</span></div>
+        <div class="key"><span class="label">C</span></div>
+        <div class="key"><span class="label">V</span></div>
+        <div class="key"><span class="label">B</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key layer-tap"><span class="label">Esc</span><span class="sub">NUM</span></div>
+        <div class="key layer-tap"><span class="label">Space</span><span class="sub">NAV</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key"><span class="label">Y</span></div>
+        <div class="key"><span class="label">U</span></div>
+        <div class="key"><span class="label">I</span></div>
+        <div class="key"><span class="label">O</span></div>
+        <div class="key"><span class="label">P</span></div>
+      </div>
+      <div class="row">
+        <div class="key"><span class="label">H</span></div>
+        <div class="key"><span class="label">J</span></div>
+        <div class="key"><span class="label">K</span></div>
+        <div class="key"><span class="label">L</span></div>
+        <div class="key layer-tap"><span class="label">Tab</span><span class="sub">SYM</span></div>
+      </div>
+      <div class="row">
+        <div class="key"><span class="label">N</span></div>
+        <div class="key"><span class="label">M</span></div>
+        <div class="key"><span class="label">,</span></div>
+        <div class="key"><span class="label">.</span></div>
+        <div class="key modifier"><span class="label">Shift</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key layer-tap"><span class="label">Bksp</span><span class="sub">MOD</span></div>
+        <div class="key layer-tap"><span class="label">Enter</span><span class="sub">SWAY</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>Combo:</strong> Press <code>Q</code> + <code>P</code> simultaneously to type <code>nodemadic</code><br>
+    <strong>Caps Word:</strong> Available on FUNC layer (hold Space + Bksp, then tap F position)
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="layer-panel" data-layer="1">
+  <div class="layer-header">
+    <h2>Layer 1: NAV</h2>
+    <p>Hold Space. Vim-style arrows on right home row. Left hand has hold-modifiers for combos like Shift+Arrow (select), Ctrl+Arrow (word jump).</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key modifier"><span class="label">Shift</span></div>
+        <div class="key modifier"><span class="label">Alt</span></div>
+        <div class="key modifier"><span class="label">Ctrl</span></div>
+        <div class="key modifier"><span class="label">Super</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key nav"><span class="label">Undo</span><span class="sub">C+Z</span></div>
+        <div class="key nav"><span class="label">Cut</span><span class="sub">C+X</span></div>
+        <div class="key nav"><span class="label">Copy</span><span class="sub">C+C</span></div>
+        <div class="key nav"><span class="label">Paste</span><span class="sub">C+V</span></div>
+        <div class="key nav"><span class="label">Del</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key held"><span class="label">HELD</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key nav"><span class="label">&larr;</span></div>
+        <div class="key nav"><span class="label">&darr;</span></div>
+        <div class="key nav"><span class="label">&uarr;</span></div>
+        <div class="key nav"><span class="label">&rarr;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key nav"><span class="label">Home</span></div>
+        <div class="key nav"><span class="label">PgDn</span></div>
+        <div class="key nav"><span class="label">PgUp</span></div>
+        <div class="key nav"><span class="label">End</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>Select text:</strong> Hold Space + <code>A</code>(Shift) + arrow<br>
+    <strong>Word jump:</strong> Hold Space + <code>D</code>(Ctrl) + arrow<br>
+    <strong>Select word:</strong> Hold Space + <code>A</code>(Shift) + <code>D</code>(Ctrl) + arrow
+  </div>
+</div>
+
+<!-- NUM -->
+<div class="layer-panel" data-layer="2">
+  <div class="layer-header">
+    <h2>Layer 2: NUM</h2>
+    <p>Hold Esc. True numpad on right hand (7-8-9 / 4-5-6 / 1-2-3 / 0). Left hand has hold-modifiers.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key modifier"><span class="label">Shift</span></div>
+        <div class="key modifier"><span class="label">Alt</span></div>
+        <div class="key modifier"><span class="label">Ctrl</span></div>
+        <div class="key modifier"><span class="label">Super</span></div>
+        <div class="key symbol"><span class="label">=</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key held"><span class="label">HELD</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key symbol"><span class="label">/</span></div>
+        <div class="key number"><span class="label">7</span></div>
+        <div class="key number"><span class="label">8</span></div>
+        <div class="key number"><span class="label">9</span></div>
+        <div class="key symbol"><span class="label">-</span></div>
+      </div>
+      <div class="row">
+        <div class="key symbol"><span class="label">*</span></div>
+        <div class="key number"><span class="label">4</span></div>
+        <div class="key number"><span class="label">5</span></div>
+        <div class="key number"><span class="label">6</span></div>
+        <div class="key symbol"><span class="label">+</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key number"><span class="label">1</span></div>
+        <div class="key number"><span class="label">2</span></div>
+        <div class="key number"><span class="label">3</span></div>
+        <div class="key symbol"><span class="label">.</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key number"><span class="label">0</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD -->
+<div class="layer-panel" data-layer="3">
+  <div class="layer-header">
+    <h2>Layer 3: MOD</h2>
+    <p>Hold Bksp. Callum-style one-shot modifiers. Tap a modifier to arm it, release Bksp, then press the target key. Tap twice to lock.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key modifier"><span class="label">Shift</span><span class="sub">one-shot</span></div>
+        <div class="key modifier"><span class="label">Alt</span><span class="sub">one-shot</span></div>
+        <div class="key modifier"><span class="label">Ctrl</span><span class="sub">one-shot</span></div>
+        <div class="key modifier"><span class="label">Super</span><span class="sub">one-shot</span></div>
+        <div class="key sway"><span class="label">S+G</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key modifier"><span class="label">Super</span><span class="sub">one-shot</span></div>
+        <div class="key modifier"><span class="label">Ctrl</span><span class="sub">one-shot</span></div>
+        <div class="key modifier"><span class="label">Alt</span><span class="sub">one-shot</span></div>
+        <div class="key modifier"><span class="label">Shift</span><span class="sub">one-shot</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key held"><span class="label">HELD</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>Ctrl+C:</strong> Hold Bksp &rarr; tap <code>K</code> (Ctrl) &rarr; release Bksp &rarr; tap <code>C</code><br>
+    <strong>Ctrl+Shift+V:</strong> Hold Bksp &rarr; tap <code>K</code> (Ctrl) + <code>A</code> (Shift) &rarr; release Bksp &rarr; tap <code>V</code><br>
+    <strong>Lock modifier:</strong> Tap the same modifier twice while on MOD layer
+  </div>
+</div>
+
+<!-- SWAY -->
+<div class="layer-panel" data-layer="4">
+  <div class="layer-header">
+    <h2>Layer 4: SWAY</h2>
+    <p>Hold Enter. Window management for Sway WM. All keys send Super+key combos. Hold Shift (right pinky) to move windows.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key sway"><span class="label">WS 1</span></div>
+        <div class="key sway"><span class="label">WS 2</span></div>
+        <div class="key sway"><span class="label">WS 3</span></div>
+        <div class="key sway"><span class="label">WS 4</span></div>
+        <div class="key sway"><span class="label">WS 5</span></div>
+      </div>
+      <div class="row">
+        <div class="key danger"><span class="label">Kill</span><span class="sub">S+S+Q</span></div>
+        <div class="key sway"><span class="label">Launch</span><span class="sub">S+D</span></div>
+        <div class="key sway"><span class="label">Full</span><span class="sub">S+F</span></div>
+        <div class="key sway"><span class="label">Float</span><span class="sub">S+S+Spc</span></div>
+        <div class="key sway"><span class="label">Resize</span><span class="sub">S+R</span></div>
+      </div>
+      <div class="row">
+        <div class="key sway"><span class="label">Reload</span><span class="sub">S+S+C</span></div>
+        <div class="key sway"><span class="label">Lock</span><span class="sub">S+Esc</span></div>
+        <div class="key sway"><span class="label">Clip</span><span class="sub">S+P</span></div>
+        <div class="key sway"><span class="label">SplitV</span><span class="sub">S+T</span></div>
+        <div class="key sway"><span class="label">SplitH</span><span class="sub">S+B</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key sway"><span class="label">Term</span><span class="sub">S+Ent</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key sway"><span class="label">WS 6</span></div>
+        <div class="key sway"><span class="label">WS 7</span></div>
+        <div class="key sway"><span class="label">WS 8</span></div>
+        <div class="key sway"><span class="label">WS 9</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key sway"><span class="label">Foc &larr;</span><span class="sub">S+H</span></div>
+        <div class="key sway"><span class="label">Foc &darr;</span><span class="sub">S+J</span></div>
+        <div class="key sway"><span class="label">Foc &uarr;</span><span class="sub">S+K</span></div>
+        <div class="key sway"><span class="label">Foc &rarr;</span><span class="sub">S+L</span></div>
+        <div class="key danger"><span class="label">Exit</span><span class="sub">S+S+E</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key modifier"><span class="label">Shift</span><span class="sub">move win</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key held"><span class="label">HELD</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>+Shift:</strong> WS keys become "move window to workspace", Focus keys become "move window in direction"<br>
+    <strong>S</strong> = Super, <strong>S+S</strong> = Super+Shift
+  </div>
+</div>
+
+<!-- SYM -->
+<div class="layer-panel" data-layer="5">
+  <div class="layer-header">
+    <h2>Layer 5: SYM</h2>
+    <p>Hold Tab (right home pinky). All symbols organized by frequency: common punctuation on home row, brackets on bottom row.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key symbol"><span class="label">!</span></div>
+        <div class="key symbol"><span class="label">@</span></div>
+        <div class="key symbol"><span class="label">#</span></div>
+        <div class="key symbol"><span class="label">$</span></div>
+        <div class="key symbol"><span class="label">%</span></div>
+      </div>
+      <div class="row">
+        <div class="key symbol"><span class="label">'</span></div>
+        <div class="key symbol"><span class="label">"</span></div>
+        <div class="key symbol"><span class="label">(</span></div>
+        <div class="key symbol"><span class="label">)</span></div>
+        <div class="key symbol"><span class="label">;</span></div>
+      </div>
+      <div class="row">
+        <div class="key symbol"><span class="label">[</span></div>
+        <div class="key symbol"><span class="label">]</span></div>
+        <div class="key symbol"><span class="label">{</span></div>
+        <div class="key symbol"><span class="label">}</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key symbol"><span class="label">^</span></div>
+        <div class="key symbol"><span class="label">&amp;</span></div>
+        <div class="key symbol"><span class="label">*</span></div>
+        <div class="key symbol"><span class="label">`</span></div>
+        <div class="key symbol"><span class="label">~</span></div>
+      </div>
+      <div class="row">
+        <div class="key symbol"><span class="label">/</span></div>
+        <div class="key symbol"><span class="label">-</span></div>
+        <div class="key symbol"><span class="label">=</span></div>
+        <div class="key symbol"><span class="label">:</span></div>
+        <div class="key held"><span class="label">HELD</span></div>
+      </div>
+      <div class="row">
+        <div class="key symbol"><span class="label">\</span></div>
+        <div class="key symbol"><span class="label">_</span></div>
+        <div class="key symbol"><span class="label">+</span></div>
+        <div class="key symbol"><span class="label">|</span></div>
+        <div class="key symbol"><span class="label">?</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>Vim <code>:</code></strong> Hold Tab + <code>L</code> &nbsp;|&nbsp;
+    <strong>Vim <code>/</code></strong> Hold Tab + <code>H</code> &nbsp;|&nbsp;
+    <strong>Quotes <code>' "</code></strong> Hold Tab + <code>A</code> / <code>S</code> &nbsp;|&nbsp;
+    <strong>Parens <code>( )</code></strong> Hold Tab + <code>D</code> / <code>F</code>
+  </div>
+</div>
+
+<!-- FUNC -->
+<div class="layer-panel" data-layer="6">
+  <div class="layer-header">
+    <h2>Layer 6: FUNC</h2>
+    <p>Tri-layer: hold Space + Bksp simultaneously. F-keys, media controls, brightness, Caps Word, and bootloader.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key func"><span class="label">F1</span></div>
+        <div class="key func"><span class="label">F2</span></div>
+        <div class="key func"><span class="label">F3</span></div>
+        <div class="key func"><span class="label">F4</span></div>
+        <div class="key func"><span class="label">F5</span></div>
+      </div>
+      <div class="row">
+        <div class="key func"><span class="label">F11</span></div>
+        <div class="key func"><span class="label">F12</span></div>
+        <div class="key func"><span class="label">PrtSc</span></div>
+        <div class="key func"><span class="label">CapsWd</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key danger"><span class="label">BOOT</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key held"><span class="label">HELD</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key func"><span class="label">F6</span></div>
+        <div class="key func"><span class="label">F7</span></div>
+        <div class="key func"><span class="label">F8</span></div>
+        <div class="key func"><span class="label">F9</span></div>
+        <div class="key func"><span class="label">F10</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key media"><span class="label">Bri+</span></div>
+        <div class="key media"><span class="label">Vol+</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key media"><span class="label">Play</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key media"><span class="label">Bri-</span></div>
+        <div class="key media"><span class="label">Vol-</span></div>
+        <div class="key media"><span class="label">Mute</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key held"><span class="label">HELD</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>BOOT:</strong> Enters bootloader for flashing firmware (no need to short pins)<br>
+    <strong>CapsWd:</strong> Types in CAPS until you press space or punctuation (great for CONSTANT_NAMES)
+  </div>
+</div>
+
+<!-- Keyboard cheat sheet -->
+<hr class="section-divider">
+<div class="cheat-sheet">
+  <h3>Keyboard Quick Reference</h3>
+  <div class="cheat-columns">
+    <div class="cheat-group">
+      <h4>Navigation (hold Space)</h4>
+      <div class="cheat-row"><span class="action">Arrow keys</span><span class="keys"><span>Spc</span> + <span>H/J/K/L</span></span></div>
+      <div class="cheat-row"><span class="action">Select text</span><span class="keys"><span>Spc</span> + <span>A</span> + arrow</span></div>
+      <div class="cheat-row"><span class="action">Word jump</span><span class="keys"><span>Spc</span> + <span>D</span> + arrow</span></div>
+      <div class="cheat-row"><span class="action">Select word</span><span class="keys"><span>Spc</span> + <span>A</span><span>D</span> + arrow</span></div>
+      <div class="cheat-row"><span class="action">Delete</span><span class="keys"><span>Spc</span> + <span>B</span></span></div>
+      <div class="cheat-row"><span class="action">Home / End</span><span class="keys"><span>Spc</span> + <span>N</span> / <span>End</span></span></div>
+    </div>
+    <div class="cheat-group">
+      <h4>Modifiers (hold Bksp)</h4>
+      <div class="cheat-row"><span class="action">Ctrl+C</span><span class="keys"><span>Bksp</span> &rarr; <span>K</span> &rarr; rel &rarr; <span>C</span></span></div>
+      <div class="cheat-row"><span class="action">Ctrl+S</span><span class="keys"><span>Bksp</span> &rarr; <span>K</span> &rarr; rel &rarr; <span>S</span></span></div>
+      <div class="cheat-row"><span class="action">Ctrl+Z</span><span class="keys"><span>Bksp</span> &rarr; <span>K</span> &rarr; rel &rarr; <span>Z</span></span></div>
+      <div class="cheat-row"><span class="action">Ctrl+Shift+V</span><span class="keys"><span>Bksp</span> &rarr; <span>K</span><span>A</span> &rarr; rel &rarr; <span>V</span></span></div>
+      <div class="cheat-row"><span class="action">Capital P</span><span class="keys"><span>Bksp</span> &rarr; <span>A</span> &rarr; rel &rarr; <span>P</span></span></div>
+    </div>
+    <div class="cheat-group">
+      <h4>Symbols (hold Tab)</h4>
+      <div class="cheat-row"><span class="action">Vim :  command</span><span class="keys"><span>Tab</span> + <span>L</span></span></div>
+      <div class="cheat-row"><span class="action">Vim /  search</span><span class="keys"><span>Tab</span> + <span>H</span></span></div>
+      <div class="cheat-row"><span class="action">' or "</span><span class="keys"><span>Tab</span> + <span>A</span> / <span>S</span></span></div>
+      <div class="cheat-row"><span class="action">( or )</span><span class="keys"><span>Tab</span> + <span>D</span> / <span>F</span></span></div>
+      <div class="cheat-row"><span class="action">[ or ]</span><span class="keys"><span>Tab</span> + <span>Z</span> / <span>X</span></span></div>
+      <div class="cheat-row"><span class="action">{ or }</span><span class="keys"><span>Tab</span> + <span>C</span> / <span>V</span></span></div>
+    </div>
+    <div class="cheat-group">
+      <h4>Sway WM (hold Enter)</h4>
+      <div class="cheat-row"><span class="action">Workspace 1-9</span><span class="keys"><span>Ent</span> + top row</span></div>
+      <div class="cheat-row"><span class="action">Move win to WS</span><span class="keys"><span>Ent</span> + <span>Shift</span> + top</span></div>
+      <div class="cheat-row"><span class="action">Focus h/j/k/l</span><span class="keys"><span>Ent</span> + <span>H/J/K/L</span></span></div>
+      <div class="cheat-row"><span class="action">Terminal</span><span class="keys"><span>Ent</span> + <span>Esc</span></span></div>
+      <div class="cheat-row"><span class="action">Kill window</span><span class="keys"><span>Ent</span> + <span>A</span></span></div>
+      <div class="cheat-row"><span class="action">App launcher</span><span class="keys"><span>Ent</span> + <span>S</span></span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end keyboard section -->
+
+
+<!-- ============================================================ -->
+<!-- SECTION: SWAY WM                                              -->
+<!-- ============================================================ -->
+<div class="section-content" data-section="sway">
+<div class="guide-section">
+  <h2>Sway Window Manager</h2>
+  <p class="subtitle">Mod = Super/Logo key &mdash; Vim-style bindings &mdash; Wayland tiling WM</p>
+
+  <div class="guide-note">
+    <strong>Your keyboard's SWAY layer (hold Enter)</strong> sends these same Super+key combos from the firmware,
+    so you don't need to press Super manually. This reference covers both approaches.
+  </div>
+
+  <div class="guide-columns">
+    <div class="guide-card">
+      <h4>Window Management</h4>
+      <div class="item"><span class="desc">Open terminal</span><span class="val"><code>Mod+Enter</code></span></div>
+      <div class="item"><span class="desc">App launcher (wofi)</span><span class="val"><code>Mod+D</code></span></div>
+      <div class="item"><span class="desc">Kill focused window</span><span class="val"><code>Mod+Shift+Q</code></span></div>
+      <div class="item"><span class="desc">Toggle fullscreen</span><span class="val"><code>Mod+F</code></span></div>
+      <div class="item"><span class="desc">Toggle floating</span><span class="val"><code>Mod+Shift+Spc</code></span></div>
+      <div class="item"><span class="desc">Enter resize mode</span><span class="val"><code>Mod+R</code></span></div>
+      <div class="item"><span class="desc">Split vertical</span><span class="val"><code>Mod+V</code></span></div>
+      <div class="item"><span class="desc">Split horizontal</span><span class="val"><code>Mod+B</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>Focus &amp; Movement</h4>
+      <div class="item"><span class="desc">Focus left</span><span class="val"><code>Mod+H</code></span></div>
+      <div class="item"><span class="desc">Focus down</span><span class="val"><code>Mod+J</code></span></div>
+      <div class="item"><span class="desc">Focus up</span><span class="val"><code>Mod+K</code></span></div>
+      <div class="item"><span class="desc">Focus right</span><span class="val"><code>Mod+L</code></span></div>
+      <div class="item"><span class="desc">Move window left</span><span class="val"><code>Mod+Shift+H</code></span></div>
+      <div class="item"><span class="desc">Move window down</span><span class="val"><code>Mod+Shift+J</code></span></div>
+      <div class="item"><span class="desc">Move window up</span><span class="val"><code>Mod+Shift+K</code></span></div>
+      <div class="item"><span class="desc">Move window right</span><span class="val"><code>Mod+Shift+L</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>Workspaces</h4>
+      <div class="item"><span class="desc">Switch to WS 1-9</span><span class="val"><code>Mod+1</code> &ndash; <code>Mod+9</code></span></div>
+      <div class="item"><span class="desc">Move win to WS 1-9</span><span class="val"><code>Mod+Shift+1</code> &ndash; <code>9</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>System</h4>
+      <div class="item"><span class="desc">Reload config</span><span class="val"><code>Mod+Shift+C</code></span></div>
+      <div class="item"><span class="desc">Exit Sway</span><span class="val"><code>Mod+Shift+E</code></span></div>
+      <div class="item"><span class="desc">Lock screen</span><span class="val"><code>Mod+Escape</code></span></div>
+      <div class="item"><span class="desc">Clipboard history</span><span class="val"><code>Mod+C</code></span></div>
+      <div class="item"><span class="desc">Screenshot (full)</span><span class="val"><code>Print</code></span></div>
+      <div class="item"><span class="desc">Screenshot (area)</span><span class="val"><code>Mod+Print</code></span></div>
+    </div>
+  </div>
+
+  <h3>Resize Mode</h3>
+  <div class="guide-note">
+    Enter with <code>Mod+R</code>, then use <code>H/J/K/L</code> to resize. Press <code>Escape</code> to exit resize mode.
+  </div>
+
+  <h3>Config Files</h3>
+  <table class="ref-table">
+    <tr><th>File</th><th>Purpose</th></tr>
+    <tr><td><code>~/.config/sway/config</code></td><td>Main Sway config (keybinds, appearance, startup)</td></tr>
+    <tr><td><code>~/.config/waybar/config.jsonc</code></td><td>Waybar modules (clock, workspaces, network)</td></tr>
+    <tr><td><code>~/.config/waybar/style.css</code></td><td>Waybar appearance</td></tr>
+    <tr><td><code>~/.config/foot/foot.ini</code></td><td>Foot terminal (font, colors, scrollback)</td></tr>
+    <tr><td><code>~/.config/mako/config</code></td><td>Notification daemon</td></tr>
+  </table>
+
+  <h3>Key Concepts</h3>
+  <div class="guide-note">
+    <strong>Tiling:</strong> Windows auto-arrange to fill the screen. Use split (V/B) before opening new windows to control layout direction.<br>
+    <strong>Floating:</strong> <code>Mod+Shift+Space</code> makes a window free-floating (drag with Mod+mouse if needed).<br>
+    <strong>Scratchpad:</strong> <code>Mod+Shift+Minus</code> stashes a window, <code>Mod+Minus</code> shows it (toggle).<br>
+    <strong>Stacking/Tabbed:</strong> <code>Mod+S</code> for stacking layout, <code>Mod+W</code> for tabbed, <code>Mod+E</code> for split.
+  </div>
+</div>
+</div><!-- end sway section -->
+
+
+<!-- ============================================================ -->
+<!-- SECTION: NEOVIM                                               -->
+<!-- ============================================================ -->
+<div class="section-content" data-section="neovim">
+<div class="guide-section">
+  <h2>Neovim (LazyVim)</h2>
+  <p class="subtitle">leader = Space &mdash; modal editing &mdash; LSP + Telescope + Treesitter</p>
+
+  <div class="guide-note">
+    <strong>Tip:</strong> Press <code>&lt;leader&gt;</code> (Space) and wait to see all available keybinds via which-key.
+    Your keyboard's NAV layer (hold Space for arrows) works in insert mode; in normal mode, just use h/j/k/l directly.
+  </div>
+
+  <h3>Vim Essentials</h3>
+  <table class="ref-table">
+    <tr><th>Action</th><th>Keys</th><th>Mode</th></tr>
+    <tr class="cat-header"><td colspan="3">Modes</td></tr>
+    <tr><td>Normal mode</td><td><code>Esc</code></td><td>any</td></tr>
+    <tr><td>Insert mode</td><td><code>i</code> / <code>a</code> / <code>o</code></td><td>normal</td></tr>
+    <tr><td>Visual mode</td><td><code>v</code> (char) / <code>V</code> (line) / <code>Ctrl+V</code> (block)</td><td>normal</td></tr>
+    <tr><td>Command mode</td><td><code>:</code> (hold Tab + L on your keyboard)</td><td>normal</td></tr>
+    <tr class="cat-header"><td colspan="3">Movement</td></tr>
+    <tr><td>Left / Down / Up / Right</td><td><code>h</code> <code>j</code> <code>k</code> <code>l</code></td><td>normal</td></tr>
+    <tr><td>Word forward / back</td><td><code>w</code> / <code>b</code></td><td>normal</td></tr>
+    <tr><td>End of word</td><td><code>e</code></td><td>normal</td></tr>
+    <tr><td>Start / end of line</td><td><code>0</code> / <code>$</code></td><td>normal</td></tr>
+    <tr><td>First non-blank</td><td><code>^</code></td><td>normal</td></tr>
+    <tr><td>Top / middle / bottom of screen</td><td><code>H</code> / <code>M</code> / <code>L</code></td><td>normal</td></tr>
+    <tr><td>Go to line N</td><td><code>Ng</code> or <code>:N</code></td><td>normal</td></tr>
+    <tr><td>File start / end</td><td><code>gg</code> / <code>G</code></td><td>normal</td></tr>
+    <tr><td>Half page up / down</td><td><code>Ctrl+U</code> / <code>Ctrl+D</code></td><td>normal</td></tr>
+    <tr><td>Search forward / back</td><td><code>/pattern</code> / <code>?pattern</code></td><td>normal</td></tr>
+    <tr><td>Next / prev match</td><td><code>n</code> / <code>N</code></td><td>normal</td></tr>
+    <tr><td>Go to matching bracket</td><td><code>%</code></td><td>normal</td></tr>
+    <tr class="cat-header"><td colspan="3">Editing</td></tr>
+    <tr><td>Delete char</td><td><code>x</code></td><td>normal</td></tr>
+    <tr><td>Delete line</td><td><code>dd</code></td><td>normal</td></tr>
+    <tr><td>Delete word</td><td><code>dw</code></td><td>normal</td></tr>
+    <tr><td>Delete to end of line</td><td><code>D</code></td><td>normal</td></tr>
+    <tr><td>Change word</td><td><code>cw</code></td><td>normal</td></tr>
+    <tr><td>Change line</td><td><code>cc</code></td><td>normal</td></tr>
+    <tr><td>Change inner word</td><td><code>ciw</code></td><td>normal</td></tr>
+    <tr><td>Change inside quotes</td><td><code>ci"</code> / <code>ci'</code></td><td>normal</td></tr>
+    <tr><td>Change inside parens</td><td><code>ci(</code> / <code>ci{</code> / <code>ci[</code></td><td>normal</td></tr>
+    <tr><td>Yank (copy) line</td><td><code>yy</code></td><td>normal</td></tr>
+    <tr><td>Paste after / before</td><td><code>p</code> / <code>P</code></td><td>normal</td></tr>
+    <tr><td>Undo / redo</td><td><code>u</code> / <code>Ctrl+R</code></td><td>normal</td></tr>
+    <tr><td>Repeat last change</td><td><code>.</code></td><td>normal</td></tr>
+    <tr><td>Indent / unindent</td><td><code>>></code> / <code><<</code></td><td>normal</td></tr>
+    <tr><td>Join lines</td><td><code>J</code></td><td>normal</td></tr>
+    <tr class="cat-header"><td colspan="3">Insert Tricks</td></tr>
+    <tr><td>Insert at start of line</td><td><code>I</code></td><td>normal</td></tr>
+    <tr><td>Append at end of line</td><td><code>A</code></td><td>normal</td></tr>
+    <tr><td>New line below / above</td><td><code>o</code> / <code>O</code></td><td>normal</td></tr>
+    <tr><td>Replace single char</td><td><code>r</code></td><td>normal</td></tr>
+    <tr class="cat-header"><td colspan="3">Save &amp; Quit</td></tr>
+    <tr><td>Save</td><td><code>:w</code></td><td>command</td></tr>
+    <tr><td>Quit</td><td><code>:q</code></td><td>command</td></tr>
+    <tr><td>Save &amp; quit</td><td><code>:wq</code> or <code>ZZ</code></td><td>command</td></tr>
+    <tr><td>Force quit</td><td><code>:q!</code></td><td>command</td></tr>
+  </table>
+
+  <h3>LazyVim Keybinds</h3>
+  <table class="ref-table">
+    <tr><th>Action</th><th>Keys</th></tr>
+    <tr class="cat-header"><td colspan="2">Files &amp; Search (Telescope)</td></tr>
+    <tr><td>Find files</td><td><code>&lt;leader&gt;ff</code></td></tr>
+    <tr><td>Live grep (search in files)</td><td><code>&lt;leader&gt;fg</code> or <code>&lt;leader&gt;/</code></td></tr>
+    <tr><td>Recent files</td><td><code>&lt;leader&gt;fr</code></td></tr>
+    <tr><td>Buffers</td><td><code>&lt;leader&gt;fb</code> or <code>&lt;leader&gt;,</code></td></tr>
+    <tr><td>Resume last search</td><td><code>&lt;leader&gt;s</code> then <code>R</code></td></tr>
+    <tr class="cat-header"><td colspan="2">File Explorer (Neo-tree)</td></tr>
+    <tr><td>Toggle file explorer</td><td><code>&lt;leader&gt;e</code></td></tr>
+    <tr><td>Find current file in tree</td><td><code>&lt;leader&gt;E</code></td></tr>
+    <tr class="cat-header"><td colspan="2">LSP (Language Server)</td></tr>
+    <tr><td>Go to definition</td><td><code>gd</code></td></tr>
+    <tr><td>Go to references</td><td><code>gr</code></td></tr>
+    <tr><td>Hover docs</td><td><code>K</code></td></tr>
+    <tr><td>Rename symbol</td><td><code>&lt;leader&gt;cr</code></td></tr>
+    <tr><td>Code actions</td><td><code>&lt;leader&gt;ca</code></td></tr>
+    <tr><td>Diagnostics (errors)</td><td><code>&lt;leader&gt;xx</code></td></tr>
+    <tr><td>Next / prev diagnostic</td><td><code>]d</code> / <code>[d</code></td></tr>
+    <tr><td>Format file</td><td><code>&lt;leader&gt;cf</code></td></tr>
+    <tr class="cat-header"><td colspan="2">Buffers &amp; Windows</td></tr>
+    <tr><td>Next / prev buffer</td><td><code>]b</code> / <code>[b</code> or <code>H</code> / <code>L</code></td></tr>
+    <tr><td>Close buffer</td><td><code>&lt;leader&gt;bd</code></td></tr>
+    <tr><td>Split horizontal</td><td><code>&lt;leader&gt;-</code></td></tr>
+    <tr><td>Split vertical</td><td><code>&lt;leader&gt;|</code></td></tr>
+    <tr><td>Move between splits</td><td><code>Ctrl+H/J/K/L</code></td></tr>
+    <tr class="cat-header"><td colspan="2">Git</td></tr>
+    <tr><td>Git status</td><td><code>&lt;leader&gt;gg</code></td></tr>
+    <tr><td>Git blame line</td><td><code>&lt;leader&gt;gb</code></td></tr>
+    <tr><td>Diff this</td><td><code>&lt;leader&gt;gd</code></td></tr>
+    <tr class="cat-header"><td colspan="2">Terminal</td></tr>
+    <tr><td>Toggle terminal</td><td><code>&lt;leader&gt;ft</code> or <code>Ctrl+/</code></td></tr>
+  </table>
+
+  <h3>Vim Grammar Pattern</h3>
+  <div class="guide-note">
+    <strong>verb + noun</strong>: <code>d</code>(delete) + <code>w</code>(word) = delete word<br>
+    <strong>Common verbs:</strong> <code>d</code>(delete) <code>c</code>(change) <code>y</code>(yank/copy) <code>v</code>(visual select)<br>
+    <strong>Common nouns:</strong> <code>w</code>(word) <code>b</code>(back word) <code>$</code>(end of line) <code>0</code>(start of line) <code>G</code>(end of file) <code>gg</code>(start of file)<br>
+    <strong>Text objects:</strong> <code>iw</code>(inner word) <code>i"</code>(inner quotes) <code>i(</code>(inner parens) <code>ip</code>(inner paragraph) <code>it</code>(inner tag)<br>
+    <strong>Multiplier:</strong> <code>3dw</code> = delete 3 words, <code>5j</code> = move down 5 lines
+  </div>
+</div>
+</div><!-- end neovim section -->
+
+
+<!-- ============================================================ -->
+<!-- SECTION: SHELL + TOOLS                                        -->
+<!-- ============================================================ -->
+<div class="section-content" data-section="tools">
+<div class="guide-section">
+  <h2>Shell &amp; Mouseless Tools</h2>
+  <p class="subtitle">Zsh + fzf + modern CLI replacements + terminal workflows</p>
+
+  <h3>Shell Aliases (from .zshrc)</h3>
+  <table class="ref-table">
+    <tr><th>Alias</th><th>Expands to</th><th>Purpose</th></tr>
+    <tr><td><code>ls</code></td><td><code>eza --icons</code></td><td>Modern ls with icons</td></tr>
+    <tr><td><code>ll</code></td><td><code>eza -la --icons</code></td><td>Long listing with hidden files</td></tr>
+    <tr><td><code>cat</code></td><td><code>bat</code></td><td>Syntax-highlighted file viewer</td></tr>
+    <tr><td><code>find</code></td><td><code>fd</code></td><td>User-friendly find</td></tr>
+    <tr><td><code>grep</code></td><td><code>rg</code></td><td>Ripgrep (fast regex search)</td></tr>
+    <tr><td><code>v</code></td><td><code>nvim</code></td><td>Open neovim</td></tr>
+    <tr><td><code>c</code></td><td><code>claude</code></td><td>Start Claude Code</td></tr>
+  </table>
+
+  <h3>FZF (Fuzzy Finder)</h3>
+  <div class="guide-columns">
+    <div class="guide-card">
+      <h4>Terminal Shortcuts</h4>
+      <div class="item"><span class="desc">Search command history</span><span class="val"><code>Ctrl+R</code></span></div>
+      <div class="item"><span class="desc">Fuzzy find files</span><span class="val"><code>Ctrl+T</code></span></div>
+      <div class="item"><span class="desc">Fuzzy cd into dirs</span><span class="val"><code>Alt+C</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>Usage Patterns</h4>
+      <div class="item"><span class="desc">Pipe anything to fzf</span><span class="val"><code>cmd | fzf</code></span></div>
+      <div class="item"><span class="desc">Open file in nvim</span><span class="val"><code>v $(fzf)</code></span></div>
+      <div class="item"><span class="desc">Preview files</span><span class="val"><code>fzf --preview 'bat {}'</code></span></div>
+    </div>
+  </div>
+
+  <h3>Mouseless Navigation Toolkit</h3>
+  <table class="ref-table">
+    <tr><th>Task</th><th>Tool</th><th>How</th></tr>
+    <tr><td>Open terminal</td><td>foot</td><td><code>Mod+Enter</code></td></tr>
+    <tr><td>Launch apps</td><td>wofi</td><td><code>Mod+D</code></td></tr>
+    <tr><td>File browsing</td><td>yazi</td><td><code>yazi</code> in terminal</td></tr>
+    <tr><td>Web browsing</td><td>Firefox + Vimium</td><td><code>f</code> for link hints</td></tr>
+    <tr><td>PDF viewing</td><td>zathura</td><td>Vim keybinds built in</td></tr>
+    <tr><td>Clipboard history</td><td>cliphist + wofi</td><td><code>Mod+C</code></td></tr>
+    <tr><td>Screenshots</td><td>grimshot</td><td><code>Print</code> / <code>Mod+Print</code></td></tr>
+    <tr><td>System monitor</td><td>btop</td><td><code>btop</code></td></tr>
+    <tr><td>Network config</td><td>nmtui</td><td><code>nmtui</code></td></tr>
+    <tr><td>Notifications</td><td>mako</td><td>automatic</td></tr>
+    <tr><td>Lock screen</td><td>swaylock</td><td><code>Mod+Escape</code></td></tr>
+  </table>
+
+  <h3>Vimium-FF (Firefox)</h3>
+  <div class="guide-columns">
+    <div class="guide-card">
+      <h4>Navigation</h4>
+      <div class="item"><span class="desc">Link hints (click)</span><span class="val"><code>f</code></span></div>
+      <div class="item"><span class="desc">Open link new tab</span><span class="val"><code>F</code></span></div>
+      <div class="item"><span class="desc">Scroll down / up</span><span class="val"><code>j</code> / <code>k</code></span></div>
+      <div class="item"><span class="desc">Half page down / up</span><span class="val"><code>d</code> / <code>u</code></span></div>
+      <div class="item"><span class="desc">Back / forward</span><span class="val"><code>H</code> / <code>L</code></span></div>
+      <div class="item"><span class="desc">Go to top / bottom</span><span class="val"><code>gg</code> / <code>G</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>Tabs</h4>
+      <div class="item"><span class="desc">New tab</span><span class="val"><code>t</code></span></div>
+      <div class="item"><span class="desc">Close tab</span><span class="val"><code>x</code></span></div>
+      <div class="item"><span class="desc">Restore tab</span><span class="val"><code>X</code></span></div>
+      <div class="item"><span class="desc">Next / prev tab</span><span class="val"><code>J</code> / <code>K</code></span></div>
+      <div class="item"><span class="desc">Go to tab</span><span class="val"><code>g0</code>-<code>g$</code></span></div>
+      <div class="item"><span class="desc">Search tabs</span><span class="val"><code>T</code></span></div>
+    </div>
+  </div>
+
+  <h3>Yazi File Manager</h3>
+  <div class="guide-columns">
+    <div class="guide-card">
+      <h4>Navigation</h4>
+      <div class="item"><span class="desc">Up / down</span><span class="val"><code>k</code> / <code>j</code></span></div>
+      <div class="item"><span class="desc">Enter directory</span><span class="val"><code>l</code> or <code>Enter</code></span></div>
+      <div class="item"><span class="desc">Go up (parent)</span><span class="val"><code>h</code></span></div>
+      <div class="item"><span class="desc">Go to top / bottom</span><span class="val"><code>g g</code> / <code>G</code></span></div>
+      <div class="item"><span class="desc">Toggle hidden</span><span class="val"><code>.</code></span></div>
+      <div class="item"><span class="desc">Search / filter</span><span class="val"><code>/</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>Operations</h4>
+      <div class="item"><span class="desc">Open file</span><span class="val"><code>Enter</code></span></div>
+      <div class="item"><span class="desc">Copy</span><span class="val"><code>y</code></span></div>
+      <div class="item"><span class="desc">Cut</span><span class="val"><code>x</code></span></div>
+      <div class="item"><span class="desc">Paste</span><span class="val"><code>p</code></span></div>
+      <div class="item"><span class="desc">Rename</span><span class="val"><code>r</code></span></div>
+      <div class="item"><span class="desc">Delete</span><span class="val"><code>d</code></span></div>
+      <div class="item"><span class="desc">Create file</span><span class="val"><code>a</code></span></div>
+      <div class="item"><span class="desc">Quit (cd to dir)</span><span class="val"><code>q</code></span></div>
+    </div>
+  </div>
+
+  <h3>Zathura (PDF Viewer)</h3>
+  <div class="guide-columns">
+    <div class="guide-card">
+      <h4>Navigation</h4>
+      <div class="item"><span class="desc">Scroll down / up</span><span class="val"><code>j</code> / <code>k</code></span></div>
+      <div class="item"><span class="desc">Next / prev page</span><span class="val"><code>J</code> / <code>K</code> or <code>Space</code></span></div>
+      <div class="item"><span class="desc">Go to page N</span><span class="val"><code>Ng</code></span></div>
+      <div class="item"><span class="desc">First / last page</span><span class="val"><code>gg</code> / <code>G</code></span></div>
+      <div class="item"><span class="desc">Search</span><span class="val"><code>/pattern</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>View</h4>
+      <div class="item"><span class="desc">Zoom in / out</span><span class="val"><code>+</code> / <code>-</code></span></div>
+      <div class="item"><span class="desc">Fit width</span><span class="val"><code>s</code></span></div>
+      <div class="item"><span class="desc">Fit page</span><span class="val"><code>a</code></span></div>
+      <div class="item"><span class="desc">Rotate</span><span class="val"><code>r</code></span></div>
+      <div class="item"><span class="desc">Toggle index</span><span class="val"><code>Tab</code></span></div>
+      <div class="item"><span class="desc">Quit</span><span class="val"><code>q</code></span></div>
+    </div>
+  </div>
+
+  <h3>Claude Code</h3>
+  <div class="guide-columns">
+    <div class="guide-card">
+      <h4>Essential Commands</h4>
+      <div class="item"><span class="desc">Start session</span><span class="val"><code>claude</code></span></div>
+      <div class="item"><span class="desc">Start in project</span><span class="val"><code>cd ~/project && claude</code></span></div>
+      <div class="item"><span class="desc">Clear context</span><span class="val"><code>/clear</code></span></div>
+      <div class="item"><span class="desc">Exit</span><span class="val"><code>/exit</code> or <code>Ctrl+D</code></span></div>
+    </div>
+    <div class="guide-card">
+      <h4>Tips</h4>
+      <div class="item"><span class="desc">It reads/edits files directly</span><span class="val"></span></div>
+      <div class="item"><span class="desc">Runs shell commands for you</span><span class="val"></span></div>
+      <div class="item"><span class="desc">Understands project context</span><span class="val"></span></div>
+      <div class="item"><span class="desc">Use for config tweaking</span><span class="val"></span></div>
+    </div>
+  </div>
+
+</div>
+</div><!-- end tools section -->
+
+
+<script>
+  // Section navigation
+  const sectionBtns = document.querySelectorAll('.section-btn');
+  const sectionContents = document.querySelectorAll('.section-content');
+
+  function switchSection(name) {
+    sectionBtns.forEach(b => b.classList.remove('active'));
+    sectionContents.forEach(s => s.classList.remove('active'));
+    const btn = document.querySelector(`.section-btn[data-section="${name}"]`);
+    const content = document.querySelector(`.section-content[data-section="${name}"]`);
+    if (btn && content) {
+      btn.classList.add('active');
+      content.classList.add('active');
+    }
+  }
+
+  sectionBtns.forEach(btn => {
+    btn.addEventListener('click', () => switchSection(btn.dataset.section));
+  });
+
+  // Layer tabs (keyboard section)
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.layer-panel');
+
+  function switchLayer(n) {
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    const tab = document.querySelector(`.tab[data-layer="${n}"]`);
+    const panel = document.querySelector(`.layer-panel[data-layer="${n}"]`);
+    if (tab && panel) {
+      tab.classList.add('active');
+      panel.classList.add('active');
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchLayer(tab.dataset.layer));
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    // Only handle keyboard layer shortcuts when keyboard section is active
+    const keyboardSection = document.querySelector('.section-content[data-section="keyboard"]');
+    if (keyboardSection && keyboardSection.classList.contains('active')) {
+      const n = parseInt(e.key);
+      if (n >= 1 && n <= 7) {
+        switchLayer(n - 1);
+        return;
+      }
+      const active = document.querySelector('.tab.active');
+      if (active) {
+        const current = parseInt(active.dataset.layer);
+        if (e.key === 'ArrowRight') {
+          switchLayer(Math.min(current + 1, 6));
+        } else if (e.key === 'ArrowLeft') {
+          switchLayer(Math.max(current - 1, 0));
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
