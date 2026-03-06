@@ -151,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SWAY] = LAYOUT_split_3x5_2(
         SW_1,    SW_2,    SW_3,    SW_4,    SW_5,         SW_6,    SW_7,    SW_8,    SW_9,    _______,
         SW_KILL, SW_LNCH, SW_FULL, SW_FLOT, SW_RESZ,     SW_FOCL, SW_FOCD, SW_FOCU, SW_FOCR, SW_EXIT,
-        SW_RLOD, SW_LOCK, SW_CLIP, SW_SPLV, SW_SPLH,     _______, _______, _______, _______, KC_LSFT,
+        SW_RLOD, SW_LOCK, SW_CLIP, SW_SPLV, SW_SPLH,     _______, LGUI(KC_M), _______, _______, KC_LSFT,
                                    SW_TERM, _______,     _______, _______
     ),
 
@@ -160,14 +160,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │  '       │  "       │  (       │  )       │  ;       │   │  /       │  -       │  =       │  :       │  [held]  │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  [       │  ]       │  {       │  }       │          │   │  \       │  _       │  +       │  |       │  ?       │
+    // │  [       │  ]       │  {       │  }       │          │   │  \       │  _       │  +       │  ?       │  |       │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
     //                                  │          │          │   │          │          │
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     [_SYM] = LAYOUT_split_3x5_2(
         KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,     KC_CIRC, KC_AMPR, KC_ASTR, KC_GRV,  KC_TILD,
         KC_QUOT, KC_DQUO, KC_LPRN, KC_RPRN, KC_SCLN,     KC_SLSH, KC_MINS, KC_EQL,  KC_COLN, _______,
-        KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, _______,     KC_BSLS, KC_UNDS, KC_PLUS, KC_PIPE, KC_QUES,
+        KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, _______,     KC_BSLS, KC_UNDS, KC_PLUS, KC_QUES, KC_PIPE,
                                    _______, _______,      _______, _______
     ),
 
