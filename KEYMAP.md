@@ -127,7 +127,7 @@ Hold Shift (right bottom pinky) to modify actions:
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │ Kill  │Launch │ Full  │ Float │Resize │   │Foc ←  │Foc ↓  │Foc ↑  │Foc →  │ Exit  │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │Reload │ Lock  │ Clip  │SplitV │SplitH │   │       │       │       │       │ Shift │
+ │Reload │ Lock  │ Clip  │SplitV │SplitH │   │       │Sup+M  │       │       │ Shift │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
                          │ Term  │       │   │       │▓▓▓▓▓▓▓│
                          └───────┴───────┘   └───────┴───────┘
@@ -149,6 +149,7 @@ Hold Shift (right bottom pinky) to modify actions:
 | Lock | Lock screen (Super+Escape → swaylock) | — |
 | Clip | Clipboard history (Super+P → cliphist) | — |
 | Exit | Exit Sway (Super+Shift+E) | — |
+| Sup+M | Voice dictation toggle (Super+M) — **BROKEN**: LGUI() on LT() bug, see DEBUGGING.md | — |
 
 ## Layer 5: SYM (Hold Tab) — Symbols
 
@@ -222,6 +223,7 @@ Activated by holding both inner thumb keys simultaneously.
 | Print Screen | Hold Space + Bksp + D |
 | Caps Word | Hold Space + Bksp + F |
 | Bootloader | Hold Space + Bksp + B |
+| Voice dictation | Hold Space + Hold F + tap G (NAV Super + G) |
 
 ## Matching Sway Config
 
