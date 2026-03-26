@@ -20,8 +20,8 @@ Includes a plain QWERTY mode (no layers) for handoff or gaming.
 |---|---|---|
 | Left outer thumb | Escape | **NUM** layer (numpad on opposite hand) |
 | Left inner thumb | Space | **NAV** layer (arrows, navigation) |
-| Right inner thumb | Enter | **SWAY** layer (window management) |
-| Right outer thumb | Backspace | **MOD** layer (one-shot Ctrl/Alt/Super/Shift) |
+| Right inner thumb | Backspace | **SWAY** layer (window management) |
+| Right outer thumb | Enter | **MOD** layer (one-shot Ctrl/Alt/Super/Shift) |
 | Right home pinky | Tab | **SYM** layer (symbols) |
 | Right bottom pinky | Shift | Shift (dedicated) |
 | Left inner + Right outer thumb | — | **FUNC** layer (F-keys, media, Caps Word) |
@@ -52,7 +52,7 @@ Only way back is Q+Z combo (press both simultaneously).
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │   Z   │   X   │   C   │   V   │   B   │   │   N   │   M   │   ,   │   .   │ Shift │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │  Esc  │ Space │   │ Enter │ Bksp  │
+                         │  Esc  │ Space │   │ Bksp  │ Enter │
                          └───────┴───────┘   └───────┴───────┘
 ```
 
@@ -71,7 +71,7 @@ Press Q + Z simultaneously to return to BASE.
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │   Z   │   X   │   C   │   V   │   B   │   │   N   │   M   │   ,   │   .   │ Shift │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │  Esc  │ Space │   │ Enter │ Bksp  │
+                         │  Esc  │ Space │   │ Bksp  │ Enter │
                          │ (NUM) │ (NAV) │   │(SWAY) │ (MOD) │
                          └───────┴───────┘   └───────┴───────┘
 ```
@@ -113,9 +113,9 @@ Left hand provides hold-modifiers for combos with numbers.
                           (held)
 ```
 
-## Layer 4: MOD (Hold outer right thumb / Bksp) — Callum One-Shot Modifiers
+## Layer 4: MOD (Hold outer right thumb / Enter) — Callum One-Shot Modifiers
 
-Tap a modifier to arm it, then release Bksp and press the target key.
+Tap a modifier to arm it, then release Enter and press the target key.
 The modifier applies to the next keypress only, then clears.
 Tap a modifier twice to lock it (tap again to unlock).
 Mirrored on both hands so you can always use the opposite hand for the target key.
@@ -134,18 +134,18 @@ Mirrored on both hands so you can always use the opposite hand for the target ke
 ```
 
 **Example — Ctrl+C:**
-1. Hold outer right thumb / Bksp (MOD layer active)
+1. Hold outer right thumb / Enter (MOD layer active)
 2. Tap K position (one-shot Ctrl armed — use right hand to avoid same-finger with C)
-3. Release Bksp
+3. Release Enter
 4. Tap C → sends Ctrl+C, one-shot clears
 
 **Example — Ctrl+Shift+V:**
-1. Hold outer right thumb / Bksp (MOD layer active)
+1. Hold outer right thumb / Enter (MOD layer active)
 2. Tap Ctrl position, then tap Shift position (both armed)
-3. Release Bksp
+3. Release Enter
 4. Tap V → sends Ctrl+Shift+V, both clear
 
-## Layer 5: SWAY (Hold inner right thumb / Enter) — Window Manager
+## Layer 5: SWAY (Hold inner right thumb / Bksp) — Window Manager
 
 Hold Shift (right bottom pinky) to modify actions:
 - Workspace keys + Shift = **move window** to that workspace
@@ -222,39 +222,39 @@ Activated by holding left inner thumb (Space/NAV) + right outer thumb (Bksp/MOD)
 |---|---|
 | Capital letter (left hand) | Shift (right pinky) + letter |
 | Capital letter (right hand) | Shift + letter (same hand, different finger) |
-| Capital P | MOD: hold Bksp (outer right) → tap Shift → release → tap P |
+| Capital P | MOD: hold Enter (outer right) → tap Shift → release → tap P |
 | Esc (Vim normal mode) | Tap left outer thumb |
 | Arrow keys | Hold Space + j/k/l/Tab (shifted right from vim HJKL) |
 | Select text | Hold Space + A(Shift) + arrow |
 | Word jump | Hold Space + D(Ctrl) + arrow |
 | Select word | Hold Space + A(Shift) + D(Ctrl) + arrow |
-| Ctrl+C | MOD: hold Bksp (outer right) → tap K(Ctrl) → release → tap C |
-| Ctrl+S | MOD: hold Bksp (outer right) → tap K(Ctrl) → release → tap S |
-| Ctrl+Z | MOD: hold Bksp (outer right) → tap K(Ctrl) → release → tap Z |
+| Ctrl+C | MOD: hold Enter (outer right) → tap K(Ctrl) → release → tap C |
+| Ctrl+S | MOD: hold Enter (outer right) → tap K(Ctrl) → release → tap S |
+| Ctrl+Z | MOD: hold Enter (outer right) → tap K(Ctrl) → release → tap Z |
 | Undo/Cut/Copy/Paste | Hold Space + Z/X/C/V (NAV bottom row) |
 | Type `:` (Vim command) | Hold Tab + L |
 | Type `/` (Vim search) | Hold Tab + H |
 | Type `'` or `"` | Hold Tab + A or S |
 | Type `(` or `)` | Hold Tab + D or F |
-| Switch workspace 3 | Hold Enter (inner right) + E |
-| Move window to WS 3 | Hold Enter (inner right) + Shift + E |
-| Focus window left | Hold Enter (inner right) + J |
-| Move window left | Hold Enter (inner right) + Shift + J |
-| Exit Sway | Hold Enter (inner right) + H |
-| Open terminal | Hold Enter (inner right) + Esc |
-| Kill window | Hold Enter (inner right) + A |
-| App launcher | Hold Enter (inner right) + S |
-| Resize mode | Hold Enter (inner right) + G |
-| Lock screen | Hold Enter (inner right) + X |
-| Clipboard history | Hold Enter (inner right) + C |
+| Switch workspace 3 | Hold Bksp (inner right) + E |
+| Move window to WS 3 | Hold Bksp (inner right) + Shift + E |
+| Focus window left | Hold Bksp (inner right) + J |
+| Move window left | Hold Bksp (inner right) + Shift + J |
+| Exit Sway | Hold Bksp (inner right) + H |
+| Open terminal | Hold Bksp (inner right) + Esc |
+| Kill window | Hold Bksp (inner right) + A |
+| App launcher | Hold Bksp (inner right) + S |
+| Resize mode | Hold Bksp (inner right) + G |
+| Lock screen | Hold Bksp (inner right) + X |
+| Clipboard history | Hold Bksp (inner right) + C |
 | Numbers | Hold Esc + right hand numpad (0 on right outer thumb) |
 | Type username combo | Tap Q + P simultaneously |
 | Toggle PLAIN mode | Tap Q + Z simultaneously (works from any layout) |
-| Toggle PLAIN mode | Hold Space + Bksp + H (FUNC layer, BASE only) |
-| F-keys | Hold Space + Bksp + top row |
-| Print Screen | Hold Space + Bksp + D |
-| Caps Word | Hold Space + Bksp + F |
-| Bootloader | Hold Space + Bksp + B |
+| Toggle PLAIN mode | Hold Space + Enter + H (FUNC layer, BASE only) |
+| F-keys | Hold Space + Enter + top row |
+| Print Screen | Hold Space + Enter + D |
+| Caps Word | Hold Space + Enter + F |
+| Bootloader | Hold Space + Enter + B |
 | Voice dictation | Hold Space + Hold F + tap G (NAV Super + G) |
 
 ## Matching Sway Config

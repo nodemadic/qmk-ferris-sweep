@@ -23,8 +23,8 @@ enum custom_keycodes {
 // Thumb keys — tap / hold layer
 #define NAV_SPC  LT(_NAV, KC_SPC)
 #define NUM_ESC  LT(_NUM, KC_ESC)
-#define MOD_BSPC LT(_MOD, KC_BSPC)
-#define SWY_ENT  LT(_SWAY, KC_ENT)
+#define SWY_BSPC LT(_SWAY, KC_BSPC)
+#define MOD_ENT  LT(_MOD, KC_ENT)
 
 // Right home pinky — tap Tab / hold SYM layer
 #define SYM_TAB  LT(_SYM, KC_TAB)
@@ -91,13 +91,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │  , <     │  . >     │ Shift    │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
-    //                                  │ Esc/NUM  │ Spc/NAV  │   │ Ent/SWAY │ Bks/MOD  │
+    //                                  │ Esc/NUM  │ Spc/NAV  │   │ Bks/SWAY │ Ent/MOD  │
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     [_BASE] = LAYOUT_split_3x5_2(
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,         KC_H,    KC_J,    KC_K,    KC_L,    SYM_TAB,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_LSFT,
-                                   NUM_ESC, NAV_SPC,      SWY_ENT, MOD_BSPC
+                                   NUM_ESC, NAV_SPC,      SWY_BSPC, MOD_ENT
     ),
 
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
@@ -107,14 +107,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │  , <     │  . >     │ Shift    │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
-    //                                  │ Escape   │ Space    │   │ Enter    │ Bksp     │
+    //                                  │ Escape   │ Space    │   │ Bksp     │ Enter    │
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     // Plain QWERTY — no layer-tap, no one-shot mods. Toggle back with Q+Z combo.
     [_PLAIN] = LAYOUT_split_3x5_2(
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,         KC_H,    KC_J,    KC_K,    KC_L,    KC_TAB,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_LSFT,
-                                   KC_ESC,  KC_SPC,       KC_ENT,  KC_BSPC
+                                   KC_ESC,  KC_SPC,       KC_BSPC, KC_ENT
     ),
 
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
