@@ -1,12 +1,13 @@
 # Ferris Sweep Keymap
 
 QMK firmware for a wired Ferris Sweep (34 keys).
-7-layer layout with no home row mods — uses Callum-style one-shot modifiers instead.
+8-layer layout with no home row mods — uses Callum-style one-shot modifiers instead.
+Includes a plain QWERTY mode (no layers) for handoff or gaming.
 
 ## Design Principles
 
 - **No home row mods** — eliminates accidental modifier triggers during prose
-- **Callum-style one-shot modifiers** on a dedicated layer (hold Bksp)
+- **Callum-style one-shot modifiers** on a dedicated layer (hold outer right thumb)
 - **Hold-modifiers on NAV/NUM layers** for sustained combos (Shift+Arrow, Ctrl+Arrow)
 - **Space on left thumb** (most natural resting position)
 - **True numpad** on right hand, activated from opposite (left) hand
@@ -19,17 +20,46 @@ QMK firmware for a wired Ferris Sweep (34 keys).
 |---|---|---|
 | Left outer thumb | Escape | **NUM** layer (numpad on opposite hand) |
 | Left inner thumb | Space | **NAV** layer (arrows, navigation) |
-| Right inner thumb | Backspace | **MOD** layer (one-shot Ctrl/Alt/Super/Shift) |
-| Right outer thumb | Enter | **SWAY** layer (window management) |
+| Right inner thumb | Enter | **SWAY** layer (window management) |
+| Right outer thumb | Backspace | **MOD** layer (one-shot Ctrl/Alt/Super/Shift) |
 | Right home pinky | Tab | **SYM** layer (symbols) |
 | Right bottom pinky | Shift | Shift (dedicated) |
-| Both inner thumbs | — | **FUNC** layer (F-keys, media, Caps Word) |
+| Left inner + Right outer thumb | — | **FUNC** layer (F-keys, media, Caps Word) |
 
 ## Combos
 
 | Keys | Action |
 |---|---|
 | Q + P (simultaneous) | Types `nodemadic` |
+| Q + Z (simultaneous) | Toggle between BASE and PLAIN layout |
+
+## Layer 0: BASE (default)
+
+Full layout with layer-tap thumbs, one-shot mods, Sway layer, etc.
+Toggle to PLAIN mode with Q+Z combo or FUNC layer H position.
+
+## Layer 1: PLAIN (toggle with Q+Z)
+
+Vanilla QWERTY — no layer-tap, no one-shot mods, no layers. Just letters + basic keys.
+Useful for handing the board to someone else or gaming.
+Only way back is Q+Z combo (press both simultaneously).
+
+```
+ ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
+ │   Q   │   W   │   E   │   R   │   T   │   │   Y   │   U   │   I   │   O   │   P   │
+ ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
+ │   A   │   S   │   D   │   F   │   G   │   │   H   │   J   │   K   │   L   │  Tab  │
+ ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
+ │   Z   │   X   │   C   │   V   │   B   │   │   N   │   M   │   ,   │   .   │ Shift │
+ └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
+                         │  Esc  │ Space │   │ Enter │ Bksp  │
+                         └───────┴───────┘   └───────┴───────┘
+```
+
+No layers accessible. Numbers, symbols, navigation, and Sway shortcuts are unavailable.
+Press Q + Z simultaneously to return to BASE.
+
+---
 
 ## Layer 0: BASE (QWERTY)
 
@@ -41,12 +71,12 @@ QMK firmware for a wired Ferris Sweep (34 keys).
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │   Z   │   X   │   C   │   V   │   B   │   │   N   │   M   │   ,   │   .   │ Shift │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │  Esc  │ Space │   │ Bksp  │ Enter │
-                         │ (NUM) │ (NAV) │   │ (MOD) │(SWAY) │
+                         │  Esc  │ Space │   │ Enter │ Bksp  │
+                         │ (NUM) │ (NAV) │   │(SWAY) │ (MOD) │
                          └───────┴───────┘   └───────┴───────┘
 ```
 
-## Layer 1: NAV (Hold Space)
+## Layer 2: NAV (Hold Space)
 
 Left hand home row has hold-modifiers for combos like Shift+Arrow (select text),
 Ctrl+Arrow (word jump), or Ctrl+Shift+Arrow (select word).
@@ -56,16 +86,16 @@ Bottom row has common clipboard shortcuts (Undo, Cut, Copy, Paste).
  ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
  │       │       │       │       │       │   │       │       │       │       │       │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │ Shift │  Alt  │ Ctrl  │ Super │       │   │   ←   │   ↓   │   ↑   │   →   │       │
+ │ Shift │  Alt  │ Ctrl  │ Super │       │   │       │   ←   │   ↓   │   ↑   │   →   │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │ Ctl+Z │ Ctl+X │ Ctl+C │ Ctl+V │  Del  │   │ Home  │ PgDn  │ PgUp  │  End  │       │
+ │ Ctl+Z │ Ctl+X │ Ctl+C │ Ctl+V │  Del  │   │       │ Home  │ PgDn  │ PgUp  │  End  │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
                          │       │▓▓▓▓▓▓▓│   │       │       │
                          └───────┴───────┘   └───────┴───────┘
                                   (held)
 ```
 
-## Layer 2: NUM (Hold Esc)
+## Layer 3: NUM (Hold Esc)
 
 True numpad on right hand (7-8-9 / 4-5-6 / 1-2-3) with 0 on the right outer thumb.
 Left hand provides hold-modifiers for combos with numbers.
@@ -83,7 +113,7 @@ Left hand provides hold-modifiers for combos with numbers.
                           (held)
 ```
 
-## Layer 3: MOD (Hold Bksp) — Callum One-Shot Modifiers
+## Layer 4: MOD (Hold outer right thumb / Bksp) — Callum One-Shot Modifiers
 
 Tap a modifier to arm it, then release Bksp and press the target key.
 The modifier applies to the next keypress only, then clears.
@@ -98,24 +128,24 @@ Mirrored on both hands so you can always use the opposite hand for the target ke
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │       │       │       │       │       │   │       │       │       │       │       │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │       │       │   │▓▓▓▓▓▓▓│       │
+                         │       │       │   │       │▓▓▓▓▓▓▓│
                          └───────┴───────┘   └───────┴───────┘
-                                              (held)
+                                                      (held)
 ```
 
 **Example — Ctrl+C:**
-1. Hold Bksp (MOD layer active)
+1. Hold outer right thumb / Bksp (MOD layer active)
 2. Tap K position (one-shot Ctrl armed — use right hand to avoid same-finger with C)
 3. Release Bksp
 4. Tap C → sends Ctrl+C, one-shot clears
 
 **Example — Ctrl+Shift+V:**
-1. Hold Bksp (MOD layer active)
+1. Hold outer right thumb / Bksp (MOD layer active)
 2. Tap Ctrl position, then tap Shift position (both armed)
 3. Release Bksp
 4. Tap V → sends Ctrl+Shift+V, both clear
 
-## Layer 4: SWAY (Hold Enter) — Window Manager
+## Layer 5: SWAY (Hold inner right thumb / Enter) — Window Manager
 
 Hold Shift (right bottom pinky) to modify actions:
 - Workspace keys + Shift = **move window** to that workspace
@@ -125,19 +155,19 @@ Hold Shift (right bottom pinky) to modify actions:
  ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
  │  WS1  │  WS2  │  WS3  │  WS4  │  WS5  │   │  WS6  │  WS7  │  WS8  │  WS9  │       │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │ Kill  │Launch │ Full  │ Float │Resize │   │Foc ←  │Foc ↓  │Foc ↑  │Foc →  │ Exit  │
+ │ Kill  │Launch │ Full  │ Float │Resize │   │ Exit  │Foc ←  │Foc ↓  │Foc ↑  │Foc →  │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │Reload │ Lock  │ Clip  │SplitV │SplitH │   │       │Sup+M  │       │       │ Shift │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │ Term  │       │   │       │▓▓▓▓▓▓▓│
+                         │ Term  │       │   │▓▓▓▓▓▓▓│       │
                          └───────┴───────┘   └───────┴───────┘
-                                                      (held)
+                                              (held)
 ```
 
 | Key | Action | + Shift |
 |---|---|---|
 | WS1-WS9 | Switch to workspace | Move window to workspace |
-| Foc ←↓↑→ | Focus window (Super+h/j/k/l) | Move window (Super+Shift+h/j/k/l) |
+| Foc ←↓↑→ | Focus window (Super+h/j/k/l), shifted one key right | Move window (Super+Shift+h/j/k/l) |
 | Kill | Kill focused window (Super+Shift+Q) | — |
 | Launch | App launcher (Super+D) | — |
 | Full | Toggle fullscreen (Super+F) | — |
@@ -151,7 +181,7 @@ Hold Shift (right bottom pinky) to modify actions:
 | Exit | Exit Sway (Super+Shift+E) | — |
 | Sup+M | Voice dictation toggle (Super+M) — **BROKEN**: LGUI() on LT() bug, see DEBUGGING.md | — |
 
-## Layer 5: SYM (Hold Tab) — Symbols
+## Layer 6: SYM (Hold Tab) — Symbols
 
 Left home row has the most-used symbols: `'`, `"`, `(`, `)`.
 Brackets `[ ] { }` are on the bottom row (less frequent).
@@ -169,21 +199,21 @@ Brackets `[ ] { }` are on the bottom row (less frequent).
                                                       (held)
 ```
 
-## Layer 6: FUNC (Hold Space + Bksp — Tri-Layer)
+## Layer 7: FUNC (Hold Space + Bksp — Tri-Layer)
 
-Activated by holding both inner thumb keys simultaneously.
+Activated by holding left inner thumb (Space/NAV) + right outer thumb (Bksp/MOD) simultaneously.
 
 ```
  ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
  │  F1   │  F2   │  F3   │  F4   │  F5   │   │  F6   │  F7   │  F8   │  F9   │  F10  │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │  F11  │  F12  │ PrtSc │CapsWd │       │   │       │BRI UP │VOL UP │       │ Play  │
+ │  F11  │  F12  │ PrtSc │CapsWd │       │   │LytTog │BRI UP │VOL UP │       │ Play  │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │       │       │       │       │ BOOT  │   │       │BRI DN │VOL DN │ Mute  │       │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │       │▓▓▓▓▓▓▓│   │▓▓▓▓▓▓▓│       │
+                         │       │▓▓▓▓▓▓▓│   │       │▓▓▓▓▓▓▓│
                          └───────┴───────┘   └───────┴───────┘
-                                  (held)      (held)
+                                  (held)              (held)
 ```
 
 ## Common Operations Cheat Sheet
@@ -192,33 +222,35 @@ Activated by holding both inner thumb keys simultaneously.
 |---|---|
 | Capital letter (left hand) | Shift (right pinky) + letter |
 | Capital letter (right hand) | Shift + letter (same hand, different finger) |
-| Capital P | MOD: hold Bksp → tap Shift → release → tap P |
+| Capital P | MOD: hold Bksp (outer right) → tap Shift → release → tap P |
 | Esc (Vim normal mode) | Tap left outer thumb |
-| Arrow keys | Hold Space + h/j/k/l |
+| Arrow keys | Hold Space + j/k/l/Tab (shifted right from vim HJKL) |
 | Select text | Hold Space + A(Shift) + arrow |
 | Word jump | Hold Space + D(Ctrl) + arrow |
 | Select word | Hold Space + A(Shift) + D(Ctrl) + arrow |
-| Ctrl+C | MOD: hold Bksp → tap K(Ctrl) → release → tap C |
-| Ctrl+S | MOD: hold Bksp → tap K(Ctrl) → release → tap S |
-| Ctrl+Z | MOD: hold Bksp → tap K(Ctrl) → release → tap Z |
+| Ctrl+C | MOD: hold Bksp (outer right) → tap K(Ctrl) → release → tap C |
+| Ctrl+S | MOD: hold Bksp (outer right) → tap K(Ctrl) → release → tap S |
+| Ctrl+Z | MOD: hold Bksp (outer right) → tap K(Ctrl) → release → tap Z |
 | Undo/Cut/Copy/Paste | Hold Space + Z/X/C/V (NAV bottom row) |
 | Type `:` (Vim command) | Hold Tab + L |
 | Type `/` (Vim search) | Hold Tab + H |
 | Type `'` or `"` | Hold Tab + A or S |
 | Type `(` or `)` | Hold Tab + D or F |
-| Switch workspace 3 | Hold Enter + E |
-| Move window to WS 3 | Hold Enter + Shift + E |
-| Focus window left | Hold Enter + H |
-| Move window left | Hold Enter + Shift + H |
-| Open terminal | Hold Enter + Esc |
-| Kill window | Hold Enter + A |
-| App launcher | Hold Enter + S |
-| Resize mode | Hold Enter + G |
-| Lock screen | Hold Enter + X |
-| Clipboard history | Hold Enter + C |
-| Exit Sway | Hold Enter + Tab |
+| Switch workspace 3 | Hold Enter (inner right) + E |
+| Move window to WS 3 | Hold Enter (inner right) + Shift + E |
+| Focus window left | Hold Enter (inner right) + J |
+| Move window left | Hold Enter (inner right) + Shift + J |
+| Exit Sway | Hold Enter (inner right) + H |
+| Open terminal | Hold Enter (inner right) + Esc |
+| Kill window | Hold Enter (inner right) + A |
+| App launcher | Hold Enter (inner right) + S |
+| Resize mode | Hold Enter (inner right) + G |
+| Lock screen | Hold Enter (inner right) + X |
+| Clipboard history | Hold Enter (inner right) + C |
 | Numbers | Hold Esc + right hand numpad (0 on right outer thumb) |
 | Type username combo | Tap Q + P simultaneously |
+| Toggle PLAIN mode | Tap Q + Z simultaneously (works from any layout) |
+| Toggle PLAIN mode | Hold Space + Bksp + H (FUNC layer, BASE only) |
 | F-keys | Hold Space + Bksp + top row |
 | Print Screen | Hold Space + Bksp + D |
 | Caps Word | Hold Space + Bksp + F |
