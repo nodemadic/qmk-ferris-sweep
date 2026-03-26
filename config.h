@@ -12,4 +12,4 @@
 #define ONESHOT_TIMEOUT 3000
 
 // Number of combos defined in keymap
-#define COMBO_COUNT 1
+#define COMBO_COUNT 2

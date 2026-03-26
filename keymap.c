@@ -3,6 +3,7 @@
 // No home row mods — Callum-style one-shot modifiers on dedicated layer
 
 #include QMK_KEYBOARD_H
+#include "raw_hid.h"
 
 enum layers {
     _BASE,
@@ -226,8 +227,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+// Send active layer index to host over Raw HID
+static void send_layer_state(uint8_t layer) {
+    uint8_t data[RAW_EPSIZE];
+    memset(data, 0, RAW_EPSIZE);
+    data[0] = 0x01;  // message type: layer change
+    data[1] = layer;
+    raw_hid_send(data, RAW_EPSIZE);
+}
+
 // Tri-layer: holding NAV (Space) + MOD (Bksp) activates FUNC
 layer_state_t layer_state_set_user(layer_state_t state) {
     state = update_tri_layer_state(state, _NAV, _MOD, _FUNC);
+    send_layer_state(get_highest_layer(state | default_layer_state));
+    return state;
+}
+
+// Also report when default layer changes (BASE <-> PLAIN toggle)
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    send_layer_state(get_highest_layer(state | layer_state));
     return state;
 }
