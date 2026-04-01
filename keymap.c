@@ -51,7 +51,6 @@ enum custom_keycodes {
 #define SW_SPLH  LGUI(KC_B)    // Split horizontal
 #define SW_TERM  LGUI(KC_ENT)  // Open terminal
 #define SW_RLOD  SGUI(KC_C)    // Reload sway config
-#define SW_RESZ  LGUI(KC_R)    // Resize mode
 #define SW_LOCK  LGUI(KC_ESC)  // Lock screen (swaylock)
 #define SW_CLIP  LGUI(KC_P)    // Clipboard history (cliphist)
 #define SW_EXIT  SGUI(KC_E)    // Exit Sway
@@ -120,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
     // │          │          │          │          │          │   │          │          │          │          │          │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  Shift   │  Alt     │  Ctrl    │  Super   │          │   │          │  Left    │  Down    │  Up      │  Right   │
+    // │  OSShift │  OSAlt   │  OSCtrl  │  OSSuper │          │   │          │  Left    │  Down    │  Up      │  Right   │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │          │          │          │          │  Delete  │   │          │  Home    │  PgDn    │  PgUp    │  End     │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
@@ -128,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     [_NAV] = LAYOUT_split_3x5_2(
         _______, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
-        KC_LSFT, KC_LALT, KC_LCTL, KC_LGUI, _______,     _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,
+        OS_LSFT, OS_LALT, OS_LCTL, OS_LGUI, _______,     _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,
         LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), KC_DEL,  _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,
                                    _______, _______,      _______, _______
     ),
@@ -152,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
     // │          │          │          │          │          │   │          │          │          │          │          │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  OSShift │  OSAlt   │  OSCtrl  │  OSSuper │          │   │          │  OSSuper │  OSCtrl  │  OSAlt   │  OSShift │
+    // │          │          │          │          │          │   │          │  OSSuper │  OSCtrl  │  OSAlt   │  OSShift │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │          │          │          │          │          │   │          │          │          │          │          │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
@@ -160,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     [_MOD] = LAYOUT_split_3x5_2(
         _______, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
-        OS_LSFT, OS_LALT, OS_LCTL, OS_LGUI, LGUI(KC_G),  _______, OS_RGUI, OS_RCTL, OS_RALT, OS_RSFT,
+        _______, _______, _______, _______, _______,      _______, OS_RGUI, OS_RCTL, OS_RALT, OS_RSFT,
         _______, _______, _______, _______, _______,      _______, _______, _______, _______, _______,
                                    _______, _______,      _______, _______
     ),
@@ -168,7 +167,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
     // │  W1      │  W2      │  W3      │  W4      │  W5      │   │  W6      │  W7      │  W8      │  W9      │          │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  Kill    │  Launch  │  Full    │  Float   │  Resize  │   │  Exit    │  FocusL  │  FocusD  │  FocusU  │  FocusR  │
+    // │  Kill    │  Launch  │  Full    │  Float   │  S+G     │   │  Exit    │  FocusL  │  FocusD  │  FocusU  │  FocusR  │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │  Reload  │  Lock    │  Clip    │  SplitV  │  SplitH  │   │          │          │          │          │  Shift   │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
@@ -176,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     [_SWAY] = LAYOUT_split_3x5_2(
         SW_1,    SW_2,    SW_3,    SW_4,    SW_5,         SW_6,    SW_7,    SW_8,    SW_9,    _______,
-        SW_KILL, SW_LNCH, SW_FULL, SW_FLOT, SW_RESZ,     SW_EXIT, SW_FOCL, SW_FOCD, SW_FOCU, SW_FOCR,
+        SW_KILL, SW_LNCH, SW_FULL, SW_FLOT, LGUI(KC_G),  SW_EXIT, SW_FOCL, SW_FOCD, SW_FOCU, SW_FOCR,
         SW_RLOD, SW_LOCK, SW_CLIP, SW_SPLV, SW_SPLH,     _______, LGUI(KC_M), _______, _______, KC_LSFT,
                                    SW_TERM, _______,     _______, _______
     ),
@@ -229,11 +228,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Send active layer index to host over Raw HID
 static void send_layer_state(uint8_t layer) {
-    uint8_t data[RAW_EPSIZE];
-    memset(data, 0, RAW_EPSIZE);
+    uint8_t data[32];
+    memset(data, 0, 32);
     data[0] = 0x01;  // message type: layer change
     data[1] = layer;
-    raw_hid_send(data, RAW_EPSIZE);
+    raw_hid_send(data, 32);
 }
 
 // Tri-layer: holding NAV (Space) + MOD (Bksp) activates FUNC
