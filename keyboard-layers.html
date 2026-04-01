@@ -529,17 +529,16 @@
   <div class="legend-item"><div class="legend-swatch swatch-func"></div> Function</div>
 </div>
 
-<div class="kbd-hint">Navigate layers: <kbd>1</kbd>-<kbd>8</kbd> or <kbd>&larr;</kbd><kbd>&rarr;</kbd> arrow keys</div>
+<div class="kbd-hint">Navigate layers: <kbd>1</kbd>-<kbd>7</kbd> or <kbd>&larr;</kbd><kbd>&rarr;</kbd> arrow keys</div>
 
 <div class="tabs" id="tabs">
   <button class="tab active" data-layer="0">BASE<span class="hint">default</span></button>
   <button class="tab" data-layer="1">PLAIN<span class="hint">Q+Z toggle</span></button>
   <button class="tab" data-layer="2">NAV<span class="hint">hold Space</span></button>
   <button class="tab" data-layer="3">NUM<span class="hint">hold Esc</span></button>
-  <button class="tab" data-layer="4">MOD<span class="hint">hold Enter</span></button>
-  <button class="tab" data-layer="5">SWAY<span class="hint">hold Bksp</span></button>
-  <button class="tab" data-layer="6">SYM<span class="hint">hold Tab</span></button>
-  <button class="tab" data-layer="7">FUNC<span class="hint">Spc + Ent</span></button>
+  <button class="tab" data-layer="4">SWAY<span class="hint">hold Bksp</span></button>
+  <button class="tab" data-layer="5">SYM<span class="hint">hold Enter</span></button>
+  <button class="tab" data-layer="6">FUNC<span class="hint">Spc + Ent</span></button>
 </div>
 
 <!-- BASE -->
@@ -589,7 +588,7 @@
         <div class="key"><span class="label">J</span></div>
         <div class="key"><span class="label">K</span></div>
         <div class="key"><span class="label">L</span></div>
-        <div class="key layer-tap"><span class="label">Tab</span><span class="sub">SYM</span></div>
+        <div class="key"><span class="label">Tab</span></div>
       </div>
       <div class="row">
         <div class="key"><span class="label">N</span></div>
@@ -600,7 +599,7 @@
       </div>
       <div class="thumb-row">
         <div class="key layer-tap"><span class="label">Bksp</span><span class="sub">SWAY</span></div>
-        <div class="key layer-tap"><span class="label">Enter</span><span class="sub">MOD</span></div>
+        <div class="key layer-tap"><span class="label">Enter</span><span class="sub">SYM</span></div>
       </div>
     </div>
   </div>
@@ -658,23 +657,23 @@
         <div class="key"><span class="label">J</span></div>
         <div class="key"><span class="label">K</span></div>
         <div class="key"><span class="label">L</span></div>
-        <div class="key layer-tap"><span class="label">Tab</span><span class="sub">SYM</span></div>
+        <div class="key"><span class="label">Tab</span></div>
       </div>
       <div class="row">
         <div class="key"><span class="label">N</span></div>
         <div class="key"><span class="label">M</span></div>
         <div class="key"><span class="label">,</span></div>
         <div class="key"><span class="label">.</span></div>
-        <div class="key modifier"><span class="label">Shift</span></div>
+        <div class="key"><span class="label">Esc</span></div>
       </div>
       <div class="thumb-row">
         <div class="key layer-tap"><span class="label">Bksp</span><span class="sub">SWAY</span></div>
-        <div class="key layer-tap"><span class="label">Enter</span><span class="sub">MOD</span></div>
+        <div class="key layer-tap"><span class="label">Enter</span><span class="sub">SYM</span></div>
       </div>
     </div>
   </div>
   <div class="info-box">
-    <strong>No layers accessible.</strong> Numbers, symbols, navigation, and Sway shortcuts are unavailable.<br>
+    <strong>Left hand plain only.</strong> Right hand retains SWAY/SYM layer access.<br>
     <strong>Return to BASE:</strong> Press <code>Q</code> + <code>Z</code> simultaneously.
   </div>
 </div>
@@ -683,7 +682,7 @@
 <div class="layer-panel" data-layer="2">
   <div class="layer-header">
     <h2>Layer 2: NAV</h2>
-    <p>Hold Space. Arrows shifted right on home row. Left hand has hold-modifiers for combos like Shift+Arrow (select), Ctrl+Arrow (word jump).</p>
+    <p>Hold Space. Arrows on right home row. Left hand has one-shot modifiers — tap then press the next key to apply.</p>
   </div>
   <div class="keyboard">
     <div class="hand left">
@@ -695,10 +694,10 @@
         <div class="key transparent"><span class="label">&middot;</span></div>
       </div>
       <div class="row">
-        <div class="key modifier"><span class="label">Shift</span></div>
-        <div class="key modifier"><span class="label">Alt</span></div>
-        <div class="key modifier"><span class="label">Ctrl</span></div>
-        <div class="key modifier"><span class="label">Super</span></div>
+        <div class="key modifier"><span class="label">OSShift</span></div>
+        <div class="key modifier"><span class="label">OSAlt</span></div>
+        <div class="key modifier"><span class="label">OSCtrl</span></div>
+        <div class="key modifier"><span class="label">OSSuper</span></div>
         <div class="key transparent"><span class="label">&middot;</span></div>
       </div>
       <div class="row">
@@ -812,79 +811,10 @@
   </div>
 </div>
 
-<!-- MOD -->
+<!-- SWAY -->
 <div class="layer-panel" data-layer="4">
   <div class="layer-header">
-    <h2>Layer 4: MOD</h2>
-    <p>Hold Enter (outer right thumb). Callum-style one-shot modifiers. Tap a modifier to arm it, release Enter, then press the target key. Tap twice to lock.</p>
-  </div>
-  <div class="keyboard">
-    <div class="hand left">
-      <div class="row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-      </div>
-      <div class="row">
-        <div class="key modifier"><span class="label">Shift</span><span class="sub">one-shot</span></div>
-        <div class="key modifier"><span class="label">Alt</span><span class="sub">one-shot</span></div>
-        <div class="key modifier"><span class="label">Ctrl</span><span class="sub">one-shot</span></div>
-        <div class="key modifier"><span class="label">Super</span><span class="sub">one-shot</span></div>
-        <div class="key sway"><span class="label">Dictate</span><span class="sub">S+G</span></div>
-      </div>
-      <div class="row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-      </div>
-      <div class="thumb-row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-      </div>
-    </div>
-    <div class="hand right">
-      <div class="row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-      </div>
-      <div class="row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key modifier"><span class="label">Super</span><span class="sub">one-shot</span></div>
-        <div class="key modifier"><span class="label">Ctrl</span><span class="sub">one-shot</span></div>
-        <div class="key modifier"><span class="label">Alt</span><span class="sub">one-shot</span></div>
-        <div class="key modifier"><span class="label">Shift</span><span class="sub">one-shot</span></div>
-      </div>
-      <div class="row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
-      </div>
-      <div class="thumb-row">
-        <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key held"><span class="label">HELD</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="info-box">
-    <strong>Ctrl+C:</strong> Hold Enter &rarr; tap <code>K</code> (Ctrl) &rarr; release Enter &rarr; tap <code>C</code><br>
-    <strong>Ctrl+Shift+V:</strong> Hold Enter &rarr; tap <code>K</code> (Ctrl) + <code>A</code> (Shift) &rarr; release Enter &rarr; tap <code>V</code><br>
-    <strong>Lock modifier:</strong> Tap the same modifier twice while on MOD layer
-  </div>
-</div>
-
-<!-- SWAY -->
-<div class="layer-panel" data-layer="5">
-  <div class="layer-header">
-    <h2>Layer 5: SWAY</h2>
+    <h2>Layer 4: SWAY</h2>
     <p>Hold Bksp (inner right thumb). Window management for Sway WM. All keys send Super+key combos. Hold Shift (right pinky) to move windows.</p>
   </div>
   <div class="keyboard">
@@ -901,7 +831,7 @@
         <div class="key sway"><span class="label">Launch</span><span class="sub">S+D</span></div>
         <div class="key sway"><span class="label">Claude</span><span class="sub">S+F</span></div>
         <div class="key sway"><span class="label">Browser</span><span class="sub">S+S+Spc</span></div>
-        <div class="key sway"><span class="label">Resize</span><span class="sub">S+R</span></div>
+        <div class="key sway"><span class="label">Dictate</span><span class="sub">S+G</span></div>
       </div>
       <div class="row">
         <div class="key sway"><span class="label">Reload</span><span class="sub">S+S+C</span></div>
@@ -912,7 +842,7 @@
       </div>
       <div class="thumb-row">
         <div class="key sway"><span class="label">Term</span><span class="sub">S+Ent</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key modifier"><span class="label">Shift</span><span class="sub">move win</span></div>
       </div>
     </div>
     <div class="hand right">
@@ -921,7 +851,7 @@
         <div class="key sway"><span class="label">WS 7</span></div>
         <div class="key sway"><span class="label">WS 8</span></div>
         <div class="key sway"><span class="label">WS 9</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key sway"><span class="label">WS 10</span></div>
       </div>
       <div class="row">
         <div class="key danger"><span class="label">Exit</span><span class="sub">S+S+E</span></div>
@@ -935,7 +865,7 @@
         <div class="key transparent"><span class="label">S+M</span><span class="sub">unbound</span></div>
         <div class="key transparent"><span class="label">&middot;</span></div>
         <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key modifier"><span class="label">Shift</span><span class="sub">move win</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
       </div>
       <div class="thumb-row">
         <div class="key held"><span class="label">HELD</span></div>
@@ -950,10 +880,10 @@
 </div>
 
 <!-- SYM -->
-<div class="layer-panel" data-layer="6">
+<div class="layer-panel" data-layer="5">
   <div class="layer-header">
-    <h2>Layer 6: SYM</h2>
-    <p>Hold Tab (right home pinky). All symbols organized by frequency: common punctuation on home row, brackets on bottom row.</p>
+    <h2>Layer 5: SYM</h2>
+    <p>Hold Enter (outer right thumb). All symbols organized by frequency: common punctuation on home row, brackets on bottom row.</p>
   </div>
   <div class="keyboard">
     <div class="hand left">
@@ -976,7 +906,7 @@
         <div class="key symbol"><span class="label">]</span></div>
         <div class="key symbol"><span class="label">{</span></div>
         <div class="key symbol"><span class="label">}</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key func"><span class="label">LytTog</span><span class="sub">BASE/PLAIN</span></div>
       </div>
       <div class="thumb-row">
         <div class="key transparent"><span class="label">&middot;</span></div>
@@ -996,18 +926,18 @@
         <div class="key symbol"><span class="label">-</span></div>
         <div class="key symbol"><span class="label">=</span></div>
         <div class="key symbol"><span class="label">:</span></div>
-        <div class="key held"><span class="label">HELD</span></div>
+        <div class="key symbol"><span class="label">?</span></div>
       </div>
       <div class="row">
         <div class="key symbol"><span class="label">\</span></div>
         <div class="key symbol"><span class="label">_</span></div>
         <div class="key symbol"><span class="label">+</span></div>
-        <div class="key symbol"><span class="label">?</span></div>
         <div class="key symbol"><span class="label">|</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
       </div>
       <div class="thumb-row">
         <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key held"><span class="label">HELD</span></div>
       </div>
     </div>
   </div>
@@ -1020,9 +950,9 @@
 </div>
 
 <!-- FUNC -->
-<div class="layer-panel" data-layer="7">
+<div class="layer-panel" data-layer="6">
   <div class="layer-header">
-    <h2>Layer 7: FUNC</h2>
+    <h2>Layer 6: FUNC</h2>
     <p>Tri-layer: hold Space (left inner) + Enter (right outer) simultaneously. F-keys, media controls, brightness, Caps Word, layout toggle, and bootloader.</p>
   </div>
   <div class="keyboard">
@@ -1062,17 +992,17 @@
         <div class="key func"><span class="label">F10</span></div>
       </div>
       <div class="row">
-        <div class="key func"><span class="label">LytTog</span><span class="sub">BASE/PLAIN</span></div>
-        <div class="key media"><span class="label">Bri+</span></div>
-        <div class="key media"><span class="label">Vol+</span></div>
         <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key media"><span class="label">Play</span></div>
+        <div class="key media"><span class="label">Vol+</span></div>
+        <div class="key media"><span class="label">Vol-</span></div>
+        <div class="key media"><span class="label">AppVol+</span></div>
+        <div class="key media"><span class="label">AppVol-</span></div>
       </div>
       <div class="row">
         <div class="key transparent"><span class="label">&middot;</span></div>
-        <div class="key media"><span class="label">Bri-</span></div>
-        <div class="key media"><span class="label">Vol-</span></div>
+        <div class="key media"><span class="label">Play</span></div>
         <div class="key media"><span class="label">Mute</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
         <div class="key transparent"><span class="label">&middot;</span></div>
       </div>
       <div class="thumb-row">
@@ -1158,7 +1088,6 @@
       <div class="item"><span class="desc">Claude Code (MindPalace)</span><span class="val"><code>Mod+F</code></span></div>
       <div class="item"><span class="desc">Browser (URL bar focused)</span><span class="val"><code>Mod+Shift+Spc</code></span></div>
       <div class="item"><span class="desc">Kill window (alt)</span><span class="val"><code>Mod+C</code></span></div>
-      <div class="item"><span class="desc">Enter resize mode</span><span class="val"><code>Mod+R</code></span></div>
       <div class="item"><span class="desc">Split vertical</span><span class="val"><code>Mod+T</code></span></div>
       <div class="item"><span class="desc">Split horizontal</span><span class="val"><code>Mod+B</code></span></div>
       <div class="item"><span class="desc">Focus parent</span><span class="val"><code>Mod+A</code></span></div>
@@ -1198,11 +1127,6 @@
     </div>
   </div>
 
-  <h3>Resize Mode</h3>
-  <div class="guide-note">
-    Enter with <code>Mod+R</code>, then use <code>H/J/K/L</code> to resize. Press <code>Escape</code> or <code>Enter</code> to exit resize mode.
-  </div>
-
   <h3>Config Files</h3>
   <table class="ref-table">
     <tr><th>File</th><th>Purpose</th></tr>
@@ -1216,7 +1140,7 @@
   <h3>Key Concepts</h3>
   <div class="guide-note">
     <strong>Tiling:</strong> Windows auto-arrange to fill the screen. Use split (V/B) before opening new windows to control layout direction.<br>
-    <strong>Floating:</strong> Use MOD layer one-shot modifiers to send <code>Mod+Shift+Space</code> if needed (now mapped to browser-open by default). Drag floating windows with Mod+mouse.<br>
+    <strong>Floating:</strong> Use NAV layer one-shot modifiers to send <code>Mod+Shift+Space</code> if needed. Drag floating windows with Mod+mouse.<br>
     <strong>Scratchpad:</strong> <code>Mod+Shift+Minus</code> stashes a window, <code>Mod+Minus</code> shows it (toggle).<br>
     <strong>Stacking/Tabbed:</strong> <code>Mod+S</code> for stacking layout, <code>Mod+W</code> for tabbed, <code>Mod+E</code> for split.
   </div>
