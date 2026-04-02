@@ -529,16 +529,17 @@
   <div class="legend-item"><div class="legend-swatch swatch-func"></div> Function</div>
 </div>
 
-<div class="kbd-hint">Navigate layers: <kbd>1</kbd>-<kbd>7</kbd> or <kbd>&larr;</kbd><kbd>&rarr;</kbd> arrow keys</div>
+<div class="kbd-hint">Navigate layers: <kbd>1</kbd>-<kbd>8</kbd> or <kbd>&larr;</kbd><kbd>&rarr;</kbd> arrow keys</div>
 
 <div class="tabs" id="tabs">
   <button class="tab active" data-layer="0">BASE<span class="hint">default</span></button>
-  <button class="tab" data-layer="1">PLAIN<span class="hint">Q+Z toggle</span></button>
+  <button class="tab" data-layer="1">CSGO<span class="hint">Q+Z toggle</span></button>
   <button class="tab" data-layer="2">NAV<span class="hint">hold Space</span></button>
   <button class="tab" data-layer="3">NUM<span class="hint">hold Esc</span></button>
   <button class="tab" data-layer="4">SWAY<span class="hint">hold Bksp</span></button>
   <button class="tab" data-layer="5">SYM<span class="hint">hold Enter</span></button>
   <button class="tab" data-layer="6">FUNC<span class="hint">Spc + Ent</span></button>
+  <button class="tab" data-layer="7">CSGO NUM<span class="hint">hold Esc (CSGO)</span></button>
 </div>
 
 <!-- BASE -->
@@ -605,42 +606,42 @@
   </div>
   <div class="info-box">
     <strong>Combo:</strong> Press <code>Q</code> + <code>P</code> simultaneously to type <code>nodemadic</code><br>
-    <strong>Combo:</strong> Press <code>Q</code> + <code>Z</code> simultaneously to toggle PLAIN mode (gaming)<br>
+    <strong>Combo:</strong> Press <code>Q</code> + <code>Z</code> simultaneously to toggle CSGO mode (gaming)<br>
     <strong>Caps Word:</strong> Available on FUNC layer (hold Space + Enter, then tap F position)
   </div>
 </div>
 
-<!-- PLAIN -->
+<!-- CSGO -->
 <div class="layer-panel" data-layer="1">
   <div class="layer-header">
-    <h2>Layer 1: PLAIN</h2>
-    <p>Left-hand plain QWERTY for gaming. Right hand keeps layer-tap. Toggle with Q+Z combo.</p>
+    <h2>Layer 1: CSGO</h2>
+    <p>Left-hand CS:GO gaming layer. Right hand mirrors BASE (QWERTY + layer-tap). Toggle with Q+Z combo.</p>
   </div>
   <div class="keyboard">
     <div class="hand left">
       <div class="row">
+        <div class="key nav"><span class="label">Tab</span></div>
         <div class="key"><span class="label">Q</span></div>
         <div class="key"><span class="label">W</span></div>
         <div class="key"><span class="label">E</span></div>
         <div class="key"><span class="label">R</span></div>
-        <div class="key"><span class="label">T</span></div>
       </div>
       <div class="row">
+        <div class="key modifier"><span class="label">Shift</span></div>
         <div class="key"><span class="label">A</span></div>
         <div class="key"><span class="label">S</span></div>
         <div class="key"><span class="label">D</span></div>
         <div class="key"><span class="label">F</span></div>
-        <div class="key"><span class="label">G</span></div>
       </div>
       <div class="row">
+        <div class="key modifier"><span class="label">Ctrl</span></div>
         <div class="key"><span class="label">Z</span></div>
         <div class="key"><span class="label">X</span></div>
         <div class="key"><span class="label">C</span></div>
-        <div class="key"><span class="label">V</span></div>
-        <div class="key"><span class="label">B</span></div>
+        <div class="key"><span class="label">G</span></div>
       </div>
       <div class="thumb-row">
-        <div class="key"><span class="label">Tab</span></div>
+        <div class="key layer-tap"><span class="label">hold</span><span class="sub">CNUM</span></div>
         <div class="key"><span class="label">Space</span></div>
       </div>
     </div>
@@ -673,7 +674,8 @@
     </div>
   </div>
   <div class="info-box">
-    <strong>Left hand plain only.</strong> Right hand retains SWAY/SYM layer access.<br>
+    <strong>Left hand gaming, right hand keeps BASE layers</strong> (SWAY/SYM accessible).<br>
+    <strong>Hold left thumb</strong> for weapon slots 1-5, Esc, Buy (B), Spray (T).<br>
     <strong>Return to BASE:</strong> Press <code>Q</code> + <code>Z</code> simultaneously.
   </div>
 </div>
@@ -906,7 +908,7 @@
         <div class="key symbol"><span class="label">]</span></div>
         <div class="key symbol"><span class="label">{</span></div>
         <div class="key symbol"><span class="label">}</span></div>
-        <div class="key func"><span class="label">LytTog</span><span class="sub">BASE/PLAIN</span></div>
+        <div class="key func"><span class="label">LytTog</span><span class="sub">BASE/CSGO</span></div>
       </div>
       <div class="thumb-row">
         <div class="key transparent"><span class="label">&middot;</span></div>
@@ -922,10 +924,10 @@
         <div class="key symbol"><span class="label">~</span></div>
       </div>
       <div class="row">
-        <div class="key symbol"><span class="label">/</span></div>
+        <div class="key symbol"><span class="label">:</span></div>
         <div class="key symbol"><span class="label">-</span></div>
         <div class="key symbol"><span class="label">=</span></div>
-        <div class="key symbol"><span class="label">:</span></div>
+        <div class="key symbol"><span class="label">/</span></div>
         <div class="key symbol"><span class="label">?</span></div>
       </div>
       <div class="row">
@@ -942,8 +944,8 @@
     </div>
   </div>
   <div class="info-box">
-    <strong>Vim <code>:</code></strong> Hold Tab + <code>L</code> &nbsp;|&nbsp;
-    <strong>Vim <code>/</code></strong> Hold Tab + <code>H</code> &nbsp;|&nbsp;
+    <strong>Vim <code>:</code></strong> Hold Tab + <code>H</code> &nbsp;|&nbsp;
+    <strong>Vim <code>/</code></strong> Hold Tab + <code>L</code> &nbsp;|&nbsp;
     <strong>Quotes <code>' "</code></strong> Hold Tab + <code>A</code> / <code>S</code> &nbsp;|&nbsp;
     <strong>Parens <code>( )</code></strong> Hold Tab + <code>D</code> / <code>F</code>
   </div>
@@ -1017,6 +1019,76 @@
   </div>
 </div>
 
+<!-- CSGO_NUM -->
+<div class="layer-panel" data-layer="7">
+  <div class="layer-header">
+    <h2>Layer 7: CSGO NUM</h2>
+    <p>Hold left outer thumb (from CSGO layer). Weapon slots, buy menu, spray, escape.</p>
+  </div>
+  <div class="keyboard">
+    <div class="hand left">
+      <div class="row">
+        <div class="key number"><span class="label">1</span></div>
+        <div class="key number"><span class="label">2</span></div>
+        <div class="key number"><span class="label">3</span></div>
+        <div class="key number"><span class="label">4</span></div>
+        <div class="key number"><span class="label">5</span></div>
+      </div>
+      <div class="row">
+        <div class="key nav"><span class="label">Esc</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key"><span class="label">T</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key"><span class="label">B</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key held"><span class="label">HELD</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+    <div class="hand right">
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+      <div class="thumb-row">
+        <div class="key transparent"><span class="label">&middot;</span></div>
+        <div class="key transparent"><span class="label">&middot;</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <strong>1-5:</strong> Weapon slots &nbsp;|&nbsp;
+    <strong>B:</strong> Buy menu &nbsp;|&nbsp;
+    <strong>T:</strong> Spray/voice &nbsp;|&nbsp;
+    <strong>Esc:</strong> Cancel/menu
+  </div>
+</div>
+
 <!-- Keyboard cheat sheet -->
 <hr class="section-divider">
 <div class="cheat-sheet">
@@ -1041,8 +1113,8 @@
     </div>
     <div class="cheat-group">
       <h4>Symbols (hold Tab)</h4>
-      <div class="cheat-row"><span class="action">Vim :  command</span><span class="keys"><span>Tab</span> + <span>L</span></span></div>
-      <div class="cheat-row"><span class="action">Vim /  search</span><span class="keys"><span>Tab</span> + <span>H</span></span></div>
+      <div class="cheat-row"><span class="action">Vim :  command</span><span class="keys"><span>Tab</span> + <span>H</span></span></div>
+      <div class="cheat-row"><span class="action">Vim /  search</span><span class="keys"><span>Tab</span> + <span>L</span></span></div>
       <div class="cheat-row"><span class="action">' or "</span><span class="keys"><span>Tab</span> + <span>A</span> / <span>S</span></span></div>
       <div class="cheat-row"><span class="action">( or )</span><span class="keys"><span>Tab</span> + <span>D</span> / <span>F</span></span></div>
       <div class="cheat-row"><span class="action">[ or ]</span><span class="keys"><span>Tab</span> + <span>Z</span> / <span>X</span></span></div>
@@ -1451,7 +1523,7 @@
       if (active) {
         const current = parseInt(active.dataset.layer);
         if (e.key === 'ArrowRight') {
-          switchLayer(Math.min(current + 1, 7));
+          switchLayer(Math.min(current + 1, 7));  // 0-indexed, 8 layers = max index 7
         } else if (e.key === 'ArrowLeft') {
           switchLayer(Math.max(current - 1, 0));
         }

@@ -13,3 +13,7 @@
 
 // Number of combos defined in keymap
 #define COMBO_COUNT 2
+
+// Always match combos against BASE layer keycodes so Q+Z works
+// from the same physical keys regardless of which layer is active
+#define COMBO_ONLY_FROM_LAYER 0

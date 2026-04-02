@@ -2,7 +2,7 @@
 
 QMK firmware for a wired Ferris Sweep (34 keys).
 8-layer layout with no home row mods — uses Callum-style one-shot modifiers instead.
-Includes a plain QWERTY mode (no layers) for handoff or gaming.
+Includes a CS:GO gaming layer (left-hand only, right hand on mouse).
 
 ## Design Principles
 
@@ -31,33 +31,49 @@ Includes a plain QWERTY mode (no layers) for handoff or gaming.
 | Keys | Action |
 |---|---|
 | Q + P (simultaneous) | Types `nodemadic` |
-| Q + Z (simultaneous) | Toggle between BASE and PLAIN layout |
+| Q + Z (simultaneous) | Toggle between BASE and CSGO layout |
 
 ## Layer 0: BASE (default)
 
 Full layout with layer-tap thumbs, one-shot mods, Sway layer, etc.
-Toggle to PLAIN mode with Q+Z combo or FUNC layer H position.
+Toggle to CSGO mode with Q+Z combo.
 
-## Layer 1: PLAIN (toggle with Q+Z)
+## Layer 1: CSGO (toggle with Q+Z)
 
-Vanilla QWERTY — no layer-tap, no one-shot mods, no layers. Just letters + basic keys.
-Useful for handing the board to someone else or gaming.
-Only way back is Q+Z combo (press both simultaneously).
+Left-hand CS:GO gaming layer. Right hand mirrors BASE (QWERTY + layer-tap thumbs).
+Left outer thumb holds for CSGO_NUM layer (weapon slots, buy menu).
 
 ```
  ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
- │   Q   │   W   │   E   │   R   │   T   │   │   Y   │   U   │   I   │   O   │   P   │
+ │  Tab  │   Q   │   W   │   E   │   R   │   │   Y   │   U   │   I   │   O   │   P   │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │   A   │   S   │   D   │   F   │   G   │   │   H   │   J   │   K   │   L   │  Tab  │
+ │ Shift │   A   │   S   │   D   │   F   │   │   H   │   J   │   K   │   L   │  Tab  │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │   Z   │   X   │   C   │   V   │   B   │   │   N   │   M   │   ,   │   .   │ Shift │
+ │ Ctrl  │   Z   │   X   │   C   │   G   │   │   N   │   M   │   ,   │   .   │  Esc  │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
-                         │  Esc  │ Space │   │ Bksp  │ Enter │
+                         │ CNUM  │ Space │   │ Bksp  │ Enter │
+                         │       │       │   │(SWAY) │ (SYM) │
                          └───────┴───────┘   └───────┴───────┘
 ```
 
-No layers accessible. Numbers, symbols, navigation, and Sway shortcuts are unavailable.
+Hold left outer thumb for weapon slots (CSGO_NUM layer).
+Right hand retains SWAY/SYM layer access.
 Press Q + Z simultaneously to return to BASE.
+
+## Layer 7: CSGO_NUM (hold left outer thumb from CSGO)
+
+```
+ ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
+ │   1   │   2   │   3   │   4   │   5   │   │       │       │       │       │       │
+ ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
+ │  Esc  │       │       │       │   T   │   │       │       │       │       │       │
+ ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
+ │       │       │       │       │   B   │   │       │       │       │       │       │
+ └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
+                         │▓▓▓▓▓▓▓│       │   │       │       │
+                         └───────┴───────┘   └───────┴───────┘
+                          (held)
+```
 
 ---
 
@@ -190,7 +206,7 @@ Brackets `[ ] { }` are on the bottom row (less frequent).
  ┌───────┬───────┬───────┬───────┬───────┐   ┌───────┬───────┬───────┬───────┬───────┐
  │   !   │   @   │   #   │   $   │   %   │   │   ^   │   &   │   *   │   `   │   ~   │
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
- │   '   │   "   │   (   │   )   │   ;   │   │   /   │   -   │   =   │   :   │▓▓▓▓▓▓▓│
+ │   '   │   "   │   (   │   )   │   ;   │   │   :   │   -   │   =   │   /   │▓▓▓▓▓▓▓│
  ├───────┼───────┼───────┼───────┼───────┤   ├───────┼───────┼───────┼───────┼───────┤
  │   [   │   ]   │   {   │   }   │       │   │   \   │   _   │   +   │   ?   │   |   │
  └───────┴───────┴───────┼───────┼───────┤   ├───────┼───────┼───────┴───────┴───────┘
@@ -232,8 +248,8 @@ Activated by holding left inner thumb (Space/NAV) + right outer thumb (Bksp/MOD)
 | Ctrl+S | MOD: hold Enter (outer right) → tap K(Ctrl) → release → tap S |
 | Ctrl+Z | MOD: hold Enter (outer right) → tap K(Ctrl) → release → tap Z |
 | Undo/Cut/Copy/Paste | Hold Space + Z/X/C/V (NAV bottom row) |
-| Type `:` (Vim command) | Hold Tab + L |
-| Type `/` (Vim search) | Hold Tab + H |
+| Type `:` (Vim command) | Hold Tab + H |
+| Type `/` (Vim search) | Hold Tab + L |
 | Type `'` or `"` | Hold Tab + A or S |
 | Type `(` or `)` | Hold Tab + D or F |
 | Switch workspace 3 | Hold Bksp (inner right) + E |
@@ -249,8 +265,7 @@ Activated by holding left inner thumb (Space/NAV) + right outer thumb (Bksp/MOD)
 | Clipboard history | Hold Bksp (inner right) + C |
 | Numbers | Hold Esc + right hand numpad (0 on right outer thumb) |
 | Type username combo | Tap Q + P simultaneously |
-| Toggle PLAIN mode | Tap Q + Z simultaneously (works from any layout) |
-| Toggle PLAIN mode | Hold Space + Enter + H (FUNC layer, BASE only) |
+| Toggle CSGO mode | Tap Q + Z simultaneously (works from any layout) |
 | F-keys | Hold Space + Enter + top row |
 | Print Screen | Hold Space + Enter + D |
 | Caps Word | Hold Space + Enter + F |

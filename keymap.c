@@ -1,5 +1,5 @@
 // QMK Ferris Sweep (ferris/sweep) keymap
-// 7-layer layout: BASE, PLAIN, NAV, NUM, SWAY, SYM, FUNC
+// 8-layer layout: BASE, CSGO, NAV, NUM, SWAY, SYM, FUNC, CSGO_NUM
 // No home row mods — Callum-style one-shot modifiers on NAV layer
 
 #include QMK_KEYBOARD_H
@@ -7,12 +7,13 @@
 
 enum layers {
     _BASE,
-    _PLAIN,
+    _CSGO,
     _NAV,
     _NUM,
     _SWAY,
     _SYM,
-    _FUNC
+    _FUNC,
+    _CSGO_NUM
 };
 
 enum custom_keycodes {
@@ -24,6 +25,9 @@ enum custom_keycodes {
 #define NUM_ESC  LT(_NUM, KC_ESC)
 #define SWY_BSPC LT(_SWAY, KC_BSPC)
 #define SYM_ENT  LT(_SYM, KC_ENT)
+
+// CSGO number layer (momentary from left thumb)
+#define CNUM_MO  MO(_CSGO_NUM)
 
 // Sway window manager macros ($mod = Super)
 #define SW_1     LGUI(KC_1)
@@ -52,7 +56,7 @@ enum custom_keycodes {
 #define SW_EXIT  SGUI(KC_E)    // Exit Sway
 
 // Combo: Q+P simultaneously types "nodemadic"
-// Combo: Q+Z simultaneously toggles between BASE and PLAIN layouts
+// Combo: Q+Z simultaneously toggles between BASE and CSGO layouts
 const uint16_t PROGMEM qp_combo[] = {KC_Q, KC_P, COMBO_END};
 const uint16_t PROGMEM qz_combo[] = {KC_Q, KC_Z, COMBO_END};
 
@@ -92,20 +96,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
-    // │  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
+    // │  Tab     │  Q       │  W       │  E       │  R       │   │  Y       │  U       │  I       │  O       │  P       │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │  Tab     │
+    // │  Shift   │  A       │  S       │  D       │  F       │   │  H       │  J       │  K       │  L       │  Tab     │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │  , <     │  . >     │ Escape   │
+    // │  Ctrl    │  Z       │  X       │  C       │  G       │   │  N       │  M       │  , <     │  . >     │ Escape   │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
-    //                                  │ Tab      │ Space    │   │ Bks/SWAY │ Ent/SYM  │
+    //                                  │ MO(CNUM) │  Space   │   │ Bks/SWAY │ Ent/SYM  │
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
-    // Left-hand plain QWERTY — right hand keeps layer-tap. Toggle back with Q+Z combo.
-    [_PLAIN] = LAYOUT_split_3x5_2(
-        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,         KC_H,    KC_J,    KC_K,    KC_L,    KC_TAB,
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_ESC,
-                                   KC_TAB,  KC_SPC,       SWY_BSPC, SYM_ENT
+    // CSGO: left-hand gaming layer. Toggle with Q+Z combo.
+    [_CSGO] = LAYOUT_split_3x5_2(
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
+        KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,         KC_H,    KC_J,    KC_K,    KC_L,    KC_TAB,
+        KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_G,         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_ESC,
+                                   CNUM_MO, KC_SPC,       SWY_BSPC, SYM_ENT
     ),
 
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
@@ -159,7 +163,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
     // │  !       │  @       │  #       │  $       │  %       │   │  ^       │  &       │  *       │  `       │  ~       │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-    // │  '       │  "       │  (       │  )       │  ;       │   │  /       │  -       │  =       │  :       │  ?       │
+    // │  '       │  "       │  (       │  )       │  ;       │   │  :       │  -       │  =       │  /       │  ?       │
     // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
     // │  [       │  ]       │  {       │  }       │ LytTog   │   │  \       │  _       │  +       │  |       │          │
     // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
@@ -167,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                                  └──────────┴──────────┘   └──────────┴──────────┘
     [_SYM] = LAYOUT_split_3x5_2(
         KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,     KC_CIRC, KC_AMPR, KC_ASTR, KC_GRV,  KC_TILD,
-        KC_QUOT, KC_DQUO, KC_LPRN, KC_RPRN, KC_SCLN,     KC_SLSH, KC_MINS, KC_EQL,  KC_COLN, KC_QUES,
+        KC_QUOT, KC_DQUO, KC_LPRN, KC_RPRN, KC_SCLN,     KC_COLN, KC_MINS, KC_EQL,  KC_SLSH, KC_QUES,
         KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, LAYOUT_TOG,  KC_BSLS, KC_UNDS, KC_PLUS, KC_PIPE, _______,
                                    _______, _______,      _______, _______
     ),
@@ -186,16 +190,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F11,  KC_F12,  KC_PSCR, CW_TOGG, _______,     _______, KC_VOLU, KC_VOLD, KC_F13,  KC_F14,
         _______, _______, _______, _______, QK_BOOT,     _______, KC_MPLY, KC_MUTE, _______, _______,
                                    _______, _______,      _______, _______
+    ),
+
+    // ┌──────────┬──────────┬──────────┬──────────┬──────────┐   ┌──────────┬──────────┬──────────┬──────────┬──────────┐
+    // │  1       │  2       │  3       │  4       │  5       │   │          │          │          │          │          │
+    // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+    // │  Escape  │          │          │          │  T       │   │          │          │          │          │          │
+    // ├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+    // │          │          │          │          │  B       │   │          │          │          │          │          │
+    // └──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┘
+    //                                  │  [held]  │          │   │          │          │
+    //                                  └──────────┴──────────┘   └──────────┴──────────┘
+    // CSGO numbers: hold left thumb for weapon slots, buy menu, etc.
+    [_CSGO_NUM] = LAYOUT_split_3x5_2(
+        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         _______, _______, _______, _______, _______,
+        KC_ESC,  _______, _______, _______, KC_T,         _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, KC_B,         _______, _______, _______, _______, _______,
+                                   _______, _______,      _______, _______
     )
 };
 
-// Toggle between BASE and PLAIN default layers
+// Toggle between BASE and CSGO default layers
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == LAYOUT_TOG && record->event.pressed) {
-        if (get_highest_layer(default_layer_state) == _PLAIN) {
+        if (get_highest_layer(default_layer_state) == _CSGO) {
             default_layer_set(1UL << _BASE);
         } else {
-            default_layer_set(1UL << _PLAIN);
+            default_layer_set(1UL << _CSGO);
         }
         return false;
     }
@@ -218,7 +239,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-// Also report when default layer changes (BASE <-> PLAIN toggle)
+// Also report when default layer changes (BASE <-> CSGO toggle)
 layer_state_t default_layer_state_set_user(layer_state_t state) {
     send_layer_state(get_highest_layer(state | layer_state));
     return state;
